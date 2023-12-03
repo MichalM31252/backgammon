@@ -68,8 +68,6 @@ void handleShow(DiceBag* DiceBag) // this function is used to print the elements
 
 void handleRoll(DiceBag* DiceBag) // this function is used to roll the dice
 {
-	emptyDiceBag(DiceBag); // empties the Dice Bag
-
 	int firstDice = rand() % 6 + 1; // generates a random number between 1 and 6
 	int secondDice = rand() % 6 + 1; // generates a random number between 1 and 6
 
