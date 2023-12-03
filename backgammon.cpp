@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 #include "Dice.h"
 #include "Board.h"
@@ -16,12 +17,35 @@ using namespace std;
 
 int main()
 {
-    checkIfDiceWorks();
-    checkIfBoardWorks();
-    checkIfPawnWorks();
-    checkIfUserInterfaceWorks();
-    checkIfFileInterfaceWorks();
-    checkIfPlayerWorks();
-    checkIfBarWorks();
-    checkIfCourtWorks();
+
+    srand(time(NULL)); // this line is needed for the random number generator to work properly
+
+    
+
+
+    
+
+
+    // set up the board
+    // 
+    // decide who goes first
+    //
+    // while (game is not over)
+    // {
+    //     player rolls the dice
+    // 
+    //     if (player can move)
+    //     {
+    //         player moves
+    //     }
+    //     else
+    //     {
+    //         player passes
+    //     }
+    // }
+    //
+    // print the winner
+
+
+    
 }
