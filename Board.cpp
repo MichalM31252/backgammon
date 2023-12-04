@@ -6,6 +6,6 @@ using namespace std;
 
 // Everything related to the board
 
-void checkIfBoardWorks() {
-	cout << "Board" << endl;
+void initBoard(Board* board) {
+	
 }

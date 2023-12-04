@@ -132,6 +132,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Court.cpp" />
     <ClCompile Include="Dice.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="FileInterface.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Court.h" />
     <ClInclude Include="Dice.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="FileInterface.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Player.h" />

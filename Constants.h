@@ -5,6 +5,11 @@
 // Game constants
 const int amountOfPlayers = 2;
 const int amountOfPawnsForAPlayer = 15;
+const int maximumNumberDiceCanRoll = 6;
+
+// Player constants
+const int idOfPlayerRed = 0;
+const int idOfPlayerWhite = 1;
 
 // Visual constants
 const int boardHeight = 0; // This is for visaual purposes only
@@ -15,6 +20,7 @@ const int specialColor = 0; // This is for visaual purposes only
 
 // Board constants
 const int amountOfFields = 24;
+const int amountOfBars = 2;
 
 const int startingPointRed = 24;
 const int startingPointWhite = 1;

@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Bar.h"
 #include "Court.h"
+#include "Field.h"
 
 #include "Constants.h"
 
@@ -19,10 +20,23 @@ int main()
 {
 
     srand(time(NULL)); // this line is needed for the random number generator to work properly
+    
+    int currentPlayerNumber = decideWhichPlayerGoesFirst();
 
     DiceBag diceBag; 
     initDiceBag(&diceBag); 
-    handleRoll(&diceBag); // doesn't work
+    handleRoll(&diceBag);
+
+    Board board;
+
+    emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
+
+    // if the user decided to use the left dice first use handlePopFront
+    // if the user decided to use the right dice first use handlePopBack
+    // for dublet just use handlePopFront 4 times
+    
+
+    // now for each roll, we need to calculate 
 
 
     
@@ -49,5 +63,4 @@ int main()
     // print the winner
 
 
-    
 }

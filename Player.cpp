@@ -9,3 +9,7 @@ using namespace std;
 void checkIfPlayerWorks() {
 	cout << "Player" << endl;
 }
+
+int getIdOfNextPlayer(Player* player) {
+	return player->id + 1; // Needs a fix
+}

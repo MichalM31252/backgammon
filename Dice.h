@@ -17,3 +17,4 @@ void handlePopFront(DiceBag* DiceBag); // in case the user uses the second dice
 void emptyDiceBag(DiceBag* DiceBag); // this function is used to free the memory allocated for the vector
 void handleShow(DiceBag* DiceBag); // this function is used to print the elements of the vector
 void handleRoll(DiceBag* DiceBag); // this function is used to roll the dice
+int decideWhichPlayerGoesFirst();

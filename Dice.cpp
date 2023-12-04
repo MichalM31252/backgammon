@@ -2,6 +2,7 @@
 #include "assert.h"
 
 #include "Dice.h"
+#include "Constants.h"
 
 using namespace std;
 
@@ -54,7 +55,7 @@ void handlePopFront(DiceBag* DiceBag) // in case the user uses the second dice
 
 void emptyDiceBag(DiceBag* DiceBag) // this function is used to free the memory allocated for the vector
 {
-	delete[] DiceBag->numbers; // this is used to free the memory allocated for the vector
+	delete[] DiceBag->numbers; // delete[] only deletes the pointer
 }
 
 void handleShow(DiceBag* DiceBag) // this function is used to print the elements of the vector
@@ -84,4 +85,26 @@ void handleRoll(DiceBag* DiceBag) // this function is used to roll the dice
 	}
 
 	handleShow(DiceBag); // prints the elements of the vector
+}
+
+int decideWhichPlayerGoesFirst() {
+
+	int firstDice = rand() % maximumNumberDiceCanRoll + 1; // generates a random number between 1 and 6
+	int secondDice = rand() % maximumNumberDiceCanRoll + 1; // generates a random number between 1 and 6
+
+	cout << "First player (Red) rolled: " << firstDice << endl;
+	cout << "Second player (White) rolled: " << secondDice << endl;
+
+	if (firstDice > secondDice) {
+		cout << "Red goes first!" << endl;
+		return idOfPlayerRed;
+	}
+	if (firstDice < secondDice) {
+		cout << "White goes first!" << endl;
+		return idOfPlayerWhite;
+	}
+	if (firstDice == secondDice) {
+		cout << "Same result was rolled! Program will throw the dice again to decide who goes first" << endl;
+		return decideWhichPlayerGoesFirst();
+	}
 }
