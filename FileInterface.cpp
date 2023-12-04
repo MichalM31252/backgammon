@@ -9,7 +9,7 @@ using namespace std;
 
 // Reading and writing to files
 
-int setupFieldsFromFile(Board* board)
+int setupFieldsFromFile(Board* board, Player* players)
 {
 
 	FILE* file = fopen("basic_board.txt", "r");
@@ -28,7 +28,7 @@ int setupFieldsFromFile(Board* board)
 		}
 
 		board->fields[positionOfPawn - 1]->numberOfPawns++;
-		board->fields[positionOfPawn - 1]->playerId = idOfPlayer;
+		board->fields[positionOfPawn - 1]->player = &players[idOfPlayer];
 	}
 
 	fclose(file);
@@ -47,7 +47,7 @@ int saveBoardToFile(Board* board)
 	{
 		if (board->fields[i]->numberOfPawns != 0) {
 			for (int j = 0; j < board->fields[i]->numberOfPawns; j++) {
-				fprintf(file, "%d %d\n", board->fields[i]->playerId, i + 1);
+				fprintf(file, "%d %d\n", board->fields[i]->player->id, i + 1);
 			}
 		}
 	}

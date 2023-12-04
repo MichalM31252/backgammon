@@ -4,11 +4,12 @@
 
 struct Player
 {
-	int id;
+	int id; // Id of the player
 
 	// char* name; // Pointer to the name of the player for hall of fame
 	// int numberOfWins; // Number of wins for hall of fame
 };
 
-void checkIfPlayerWorks();
+
 int getIdOfNextPlayer(Player* player);
+void initPlayer(Player* player, int id);

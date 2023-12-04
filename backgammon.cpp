@@ -20,13 +20,18 @@ using namespace std;
 
 int main()
 {
+    bool isGameFinished = false;
 
     srand(time(NULL)); // this line is needed for the random number generator to work properly
-    
-    int currentPlayerNumber = decideWhichPlayerGoesFirst();
 
-    DiceBag diceBag; 
-    initDiceBag(&diceBag); 
+
+
+    DiceBag diceBag; // create the dice bag
+    initDiceBag(&diceBag);
+    
+    int currentPlayerNumber = decideWhichPlayerGoesFirst(); // decide which player goes first
+
+    
     handleRoll(&diceBag);
 
     // now for each roll, we need to calculate 
@@ -36,28 +41,21 @@ int main()
 
     Board board;
     
-
     setUpBoard(&board); // set up the board
 
-
-    
-    // 
-    // decide who goes first
-    //
-    // while (game is not over)
-    // {
-    //     player rolls the dice
-    // 
-    //     if (player can move)
-    //     {
-    //         player moves
-    //     }
-    //     else
-    //     {
-    //         player passes
-    //     }
-    // }
-    //
+    while (!isGameFinished)
+    {
+        //     player rolls the dice
+        // 
+        //     if (player can move)
+        //     {
+        //         player moves
+        //     }
+        //     else
+        //     {
+        //         player passes
+        //     }
+    }
     // print the winner
 
     emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program

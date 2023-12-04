@@ -5,6 +5,6 @@
 struct Field
 {
 	int numberOfPawns;
-	int playerId;
+	Player* player;
 };
 
