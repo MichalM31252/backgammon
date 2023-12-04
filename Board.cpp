@@ -1,6 +1,7 @@
+#define _CRT_SECURE_NO_DEPRECATE
+
 #include <iostream>
 #include <stdio.h>
-
 
 #include "Board.h"
 
@@ -20,33 +21,38 @@ void initBoard(Board* board) {
 	}
 }
 
-int setupBoardFromFile(Board* board) {
+int setupBoardFromFile(Board* board) 
+{
 
-	cout << "jest git" << endl;
-	//FILE* file;
+	FILE* file = fopen("basic_board.txt", "r");
+	if (file == NULL) {
+		perror("Error opening the file");
+	}
 
-	//file = fopen("basic_board.txt", "r");
+	int idOfPlayer, positionOfPawn;
 
-	//if (file == NULL) {
-	//	perror("Error opening the file");
-	//}
+	for (int i = 0; i < amountOfPawns; i++)
+	{
 
-	//int idOfPlayer, positionOfPawn;
+		if (fscanf(file, "%d %d", &idOfPlayer, &positionOfPawn) != 2) {
+			printf("Error reading numbers from the file\n");
+			fclose(file);
+			return 1;
+		}
 
-	//for (int i = 0; i < amountOfFields; i++) 
-	//{
-	//	fscanf(file, "%d %d", &idOfPlayer, &positionOfPawn);
-	//	board->fields[positionOfPawn-1]->numberOfPawns++;
-	//	board->fields[i]->playerId =idOfPlayer;
-	//}
+		board->fields[positionOfPawn - 1]->numberOfPawns++;
+		board->fields[positionOfPawn - 1]->playerId = idOfPlayer;
 
-	//board->bar->numberOfPawns = 0;
-	//// board->bar->player = nullptr;
+		cout << "Player " << idOfPlayer << " has " << board->fields[positionOfPawn-1]->numberOfPawns << " pawns on field " << positionOfPawn << endl;
+	}
 
-	//for (int i = 0; i < amountOfCourt; i++) {
-	//	board->court[i]->numberOfPawns = 0;
-	//	board->court[i]->player = nullptr;
-	//}
+	board->bar->numberOfPawns = 0;
+	board->bar->playerId = 0; // FIX THIS
+
+	for (int i = 0; i < amountOfCourt; i++) {
+		board->court[i]->numberOfPawns = 0;
+		board->court[i]->playerId = 0; // FIX THIS
+	}
 
 	return 0;
 }

@@ -7,7 +7,7 @@
 struct Court
 {
 	int numberOfPawns;
-	Player* player;
+	int playerId;
 };
 
 void checkIfCourtWorks();

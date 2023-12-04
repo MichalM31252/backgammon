@@ -7,7 +7,7 @@
 struct Bar
 {
 	int numberOfPawns;
-	Player* player; // to wywala blad
+	int playerId;
 };
 
 void checkIfBarWorks();

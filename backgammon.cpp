@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstdlib>
+#include <stdio.h>
+#include <cstdio>
 
 #include "Dice.h"
 #include "Board.h"
@@ -26,8 +28,6 @@ int main()
     DiceBag diceBag; 
     initDiceBag(&diceBag); 
     handleRoll(&diceBag);
-
-
 
     Board board;
     initBoard(&board);

@@ -4,6 +4,7 @@
 
 // Game constants
 const int amountOfPlayers = 2;
+const int amountOfPawns = 30;
 const int amountOfPawnsForAPlayer = 15;
 const int maximumNumberDiceCanRoll = 6;
 
