@@ -21,38 +21,12 @@ void initBoard(Board* board) {
 	}
 }
 
-int setupBoardFromFile(Board* board) 
-{
-
-	FILE* file = fopen("basic_board.txt", "r");
-	if (file == NULL) {
-		perror("Error opening the file");
-	}
-
-	int idOfPlayer, positionOfPawn;
-
-	for (int i = 0; i < amountOfPawns; i++)
-	{
-
-		if (fscanf(file, "%d %d", &idOfPlayer, &positionOfPawn) != 2) {
-			printf("Error reading numbers from the file\n");
-			fclose(file);
-			return 1;
-		}
-
-		board->fields[positionOfPawn - 1]->numberOfPawns++;
-		board->fields[positionOfPawn - 1]->playerId = idOfPlayer;
-
-		cout << "Player " << idOfPlayer << " has " << board->fields[positionOfPawn-1]->numberOfPawns << " pawns on field " << positionOfPawn << endl;
-	}
-
+void setUpBar(Board* board, int idOfPlayer) {
+	board->bar->playerId = idOfPlayer;
 	board->bar->numberOfPawns = 0;
-	board->bar->playerId = 0; // FIX THIS
+}
 
-	for (int i = 0; i < amountOfCourt; i++) {
-		board->court[i]->numberOfPawns = 0;
-		board->court[i]->playerId = 0; // FIX THIS
-	}
-
-	return 0;
+void setUpCourt(Board* board, int idOfPlayer) {
+	board->court[idOfPlayer]->playerId = idOfPlayer;
+	board->court[idOfPlayer]->numberOfPawns = 0;
 }

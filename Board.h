@@ -16,4 +16,5 @@ struct Board
 };
 
 void initBoard(Board* board);
-int setupBoardFromFile(Board* board);
+void setUpBar(Board* board, int idOfPlayer);
+void setUpCourt(Board* board, int idOfPlayer);

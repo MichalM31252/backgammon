@@ -31,7 +31,13 @@ int main()
 
     Board board;
     initBoard(&board);
-    setupBoardFromFile(&board);
+
+    setupFieldsFromFile(&board);
+    setUpBar(&board, 1);
+    setUpCourt(&board, 0);
+    setUpCourt(&board, 1);
+    saveBoardToFile(&board);
+
 
 
     emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
