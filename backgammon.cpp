@@ -29,31 +29,18 @@ int main()
     initDiceBag(&diceBag); 
     handleRoll(&diceBag);
 
-    Board board;
-    initBoard(&board);
-
-    setupFieldsFromFile(&board);
-    setUpBar(&board, 1);
-    setUpCourt(&board, 0);
-    setUpCourt(&board, 1);
-    saveBoardToFile(&board);
-
-
-
-    emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
-
+    // now for each roll, we need to calculate 
     // if the user decided to use the left dice first use handlePopFront
     // if the user decided to use the right dice first use handlePopBack
     // for dublet just use handlePopFront 4 times
+
+    Board board;
     
 
-    // now for each roll, we need to calculate 
+    setUpBoard(&board); // set up the board
 
 
     
-
-
-    // set up the board
     // 
     // decide who goes first
     //
@@ -73,5 +60,5 @@ int main()
     //
     // print the winner
 
-
+    emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
 }

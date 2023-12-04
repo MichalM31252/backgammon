@@ -18,3 +18,4 @@ struct Board
 void initBoard(Board* board);
 void setUpBar(Board* board, int idOfPlayer);
 void setUpCourt(Board* board, int idOfPlayer);
+void setUpBoard(Board* board);

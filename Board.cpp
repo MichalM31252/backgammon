@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "Board.h"
+#include "FileInterface.h"
 
 using namespace std;
 
@@ -29,4 +30,13 @@ void setUpBar(Board* board, int idOfPlayer) {
 void setUpCourt(Board* board, int idOfPlayer) {
 	board->court[idOfPlayer]->playerId = idOfPlayer;
 	board->court[idOfPlayer]->numberOfPawns = 0;
+}
+
+void setUpBoard(Board* board) {
+	initBoard(board);
+	setupFieldsFromFile(board);
+	setUpBar(board, 1);
+	setUpCourt(board, 0);
+	setUpCourt(board, 1);
+	saveBoardToFile(board);
 }
