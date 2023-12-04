@@ -27,7 +27,12 @@ int main()
     initDiceBag(&diceBag); 
     handleRoll(&diceBag);
 
+
+
     Board board;
+    initBoard(&board);
+    setupBoardFromFile(&board);
+
 
     emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
 

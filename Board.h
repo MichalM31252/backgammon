@@ -12,7 +12,8 @@ struct Board
 {
 	Field* fields[amountOfFields];
 	Bar* bar;
-	Court* court[amountOfBars];
+	Court* court[amountOfCourt];
 };
 
-void checkIfBoardWorks();
+void initBoard(Board* board);
+int setupBoardFromFile(Board* board);

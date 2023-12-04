@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "FileInterface.h"
 
@@ -9,4 +10,3 @@ using namespace std;
 void checkIfFileInterfaceWorks() {
 	cout << "File Interface" << endl;
 }
-

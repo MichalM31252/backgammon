@@ -20,7 +20,7 @@ const int specialColor = 0; // This is for visaual purposes only
 
 // Board constants
 const int amountOfFields = 24;
-const int amountOfBars = 2;
+const int amountOfCourt = 2;
 
 const int startingPointRed = 24;
 const int startingPointWhite = 1;
