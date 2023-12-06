@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <cstdio>
 
+#include <stdio.h> // graphical library
+#include "conio2.h"
+
 #include "Dice.h"
 #include "Board.h"
 #include "Pawn.h"
@@ -42,6 +45,8 @@ int main()
     Board board;
     
     setUpBoard(&board); // set up the board
+
+    handlePrint();
 
     while (!isGameFinished)
     {

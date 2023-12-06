@@ -47,4 +47,7 @@ void setUpBoard(Board* board) {
 	setUpCourt(board, &red, red.id);
 	setUpCourt(board, &white, white.id);
 	saveBoardToFile(board);
+
+	// also here should be saveCourtToFile
+	// save Bar to file 
 }

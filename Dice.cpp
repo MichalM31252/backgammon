@@ -107,4 +107,5 @@ int decideWhichPlayerGoesFirst() {
 		cout << "Same result was rolled! Program will throw the dice again to decide who goes first" << endl;
 		return decideWhichPlayerGoesFirst();
 	}
+	return -1;
 }
