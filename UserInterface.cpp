@@ -2,7 +2,9 @@
 #include <iostream>
 #include<stdio.h>
 #include"conio2.h"
+
 #include "Pawn.h"
+#include "Board.h"
 
 #include "Constants.h"
 
@@ -72,7 +74,7 @@ bool decideIfCornerShouldBePrinted(int i, int j, int startingY, int startingX, i
 	return false;
 }
 
-bool decideIfBorderShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField) {
+bool decideIfBorderShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField, int* currentField, int monotonicity) { // i is for the row, j is for the column
 	if (i == 1 || i == quarterHeight) {
 		gotoxy(j + startingX - 1, i + startingY - 1);
 		cputs(topAndBottomBorderSymbol);
@@ -86,7 +88,10 @@ bool decideIfBorderShouldBePrinted(int i, int j, int startingY, int startingX, i
 	if (*countToEndOfField == fieldWidth && (i > 1 && i < quarterHeight)) {
 		gotoxy(j + startingX - 1, i + startingY - 1);
 		cputs(leftAndRightBorderSymbol);
-		*countToEndOfField = 1;
+		if (i == fieldHeight - margin/2 ) {
+			*countToEndOfField = 1;
+			*currentField += monotonicity;
+		}
 		return true;
 	}
 	return false;
@@ -108,31 +113,49 @@ bool decideIfCounterSymbolShouldBePrinted(int i, int j, int startingY, int start
 	return false;
 }
 
-void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* countToEndOfField) {
+bool decideIfPawnShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int *currentField) {
+	if (*countToEndOfField == fieldWidth / 2 + 1) { // check if we are currently in the middle of the field
+		if (i > margin && i < fieldHeight - margin) { // check if we are in a place where we can place checkers
+			if (board->fields[*currentField - 1]->numberOfPawns >= i - margin) { // check if there are any checkers in the field
+				gotoxy(j + startingX - 1, i + startingY - 1);
+				cputs(pawnSymbol);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int *currentField, int monotonocity) {
 	if (decideIfCornerShouldBePrinted(i, j, startingY, startingX, countToEndOfField)) {
 		return;
 	}
-	if (decideIfBorderShouldBePrinted(i, j, startingY, startingX, countToEndOfField)) {
+	if (decideIfBorderShouldBePrinted(i, j, startingY, startingX, countToEndOfField, currentField, monotonocity)) {
 		return;
 	}
 	if (decideIfCounterSymbolShouldBePrinted(i, j, startingY, startingX, countToEndOfField)) {
+		return;
+	}
+	if (decideIfPawnShouldBePrinted(i, j, startingY, startingX, countToEndOfField, board, currentField)) {
 		return;
 	}
 	gotoxy(j + startingX - 1, i + startingY - 1);
 	cputs(space);
 }
 
-void printQuarterField(int startingY, int startingX) {
-	for (int i = 1; i <= quarterHeight; i++) {
-		int countToEndOfField = 1;
-		for (int j = 1; j <= quarterWidth; j++) {
-			printPartOfTheQuarter(i, j, startingY, startingX, &countToEndOfField);
-			countToEndOfField++;
+void printQuarterField(int startingY, int startingX, Board* board, int *currentField, int monotonocity) {
+	// inside these loops I could overwrite previous characters with user data
+	int countToEndOfField = 1;
+	for (int j = 1; j <= quarterWidth; j++ ) { // j is for the column
+		for (int i = 1; i <= quarterHeight; i++) { // i is for the row
+			printPartOfTheQuarter(i, j, startingY, startingX, &countToEndOfField, board, currentField, monotonocity);
+			// it should be around here
 		}
+		countToEndOfField++;
 	}
 }
 
-void handlePrint() {
+void handlePrint(Board* board) {
 	int zn = 0, x = 40, y = 12, attr = 7, back = 0, zero = 0;
 	char txt[32];
 
@@ -148,63 +171,41 @@ void handlePrint() {
 
 	_setcursortype(_NOCURSOR); // hide the blinking cursor
 
-	do {
-		textbackground(BLACK);
-		clrscr(); // clear the screen : we fill it out with spaces with 
-		textcolor(7); // we set the text color (7 == LIGHTGRAY)
+	textbackground(BLACK);
+	clrscr(); // clear the screen : we fill it out with spaces with 
+	textcolor(7); // we set the text color (7 == LIGHTGRAY)
 
-		// we move the coursor to column 48 and row 1
-		// rows and column are numbered starting with 1
-		gotoxy(48, 1);
-		// we print out a text at a given cursor position
-		// the cursor will move by the length of the text
+	// we move the coursor to column 48 and row 1
+	// rows and column are numbered starting with 1
+	gotoxy(48, 1);
+	// we print out a text at a given cursor position
+	// the cursor will move by the length of the text
 
-		 //printFieldNumbers(1);
-		printFieldNumbersTop();
+		//printFieldNumbers(1);
+	printFieldNumbersTop();
 
-		printQuarterField(2, 1);
-		printQuarterField(2 + quarterHeight + 1, 1);
-		printQuarterField(2, 1 + quarterWidth + 1);
-		printQuarterField(2 + quarterHeight + 1, 1 + quarterWidth + 1);
+	// Upper left quarter
+	int currentField = 13;
+	int monotonicity = 1;
+	printQuarterField(2, 1, board, &currentField, monotonicity);
 
-		printFieldNumbersBottom();
+	// Lower left quarter
+	currentField = 12;
+	monotonicity = -1;
+	printQuarterField(2 + quarterHeight + 1, 1, board, &currentField, monotonicity);
+	
+	// Upper right quarter
+	currentField = 19;
+	monotonicity = 1;
+	printQuarterField(2, 1 + quarterWidth + 1, board, &currentField, monotonicity);
+	
+	// Lower right quarter
+	currentField = 6;
+	monotonicity = -1;
+	printQuarterField(2 + quarterHeight + 1, 1 + quarterWidth + 1, board, &currentField, monotonicity);
 
+	printFieldNumbersBottom();
 
-		// print out the code of the last key pressed
-		//if (zero) sprintf(txt, "key code: 0x00 0x%02x", zn);
-		//else sprintf(txt, "key code: 0x%02x", zn);
-		//gotoxy(48, 5);
-		//cputs(txt);
-
-		// we draw a star
-		gotoxy(x, y);
-		textcolor(attr);
-		textbackground(back);
-		// putch prints one character and moves the cursor to the right
-		/*putch('*');*/
-
-		// we wait for key press and get its code
-		// most key codes correspond to the characters, like
-		// a is 'a', 2 is '2', + is '+', but some special keys
-		// like cursors provide two characters, where the first
-		// one is zero, e.g., "up arrow" is zero and 'H'
-		zero = 0;
-		zn = getch();
-		// we do not want the key 'H' to play role of "up arrow"
-		// so we check if the first code is zero
-		if (zn == 0) {
-			zero = 1;		// if this is the case then we read
-			zn = getch();		// the next code knowing that this
-			if (zn == 0x48) y--;	// will be a special key
-			else if (zn == 0x50) y++;
-			else if (zn == 0x4b) x--;
-			else if (zn == 0x4d) x++;
-		}
-		else if (zn == ' ') attr = (attr + 1) % 16;
-		else if (zn == 0x0d) back = (back + 1) % 16;	// enter key is 0x0d or '\r'
-	} while (zn != 'q');
-
-	_setcursortype(_NORMALCURSOR);	// show the cursor so it will be
 	// visible after the program ends
 	return;
 }

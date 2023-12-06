@@ -33,7 +33,6 @@ int main()
     initDiceBag(&diceBag);
     
     int currentPlayerNumber = decideWhichPlayerGoesFirst(); // decide which player goes first
-
     
     handleRoll(&diceBag);
 
@@ -46,7 +45,7 @@ int main()
     
     setUpBoard(&board); // set up the board
 
-    handlePrint();
+    handlePrint(&board);
 
     while (!isGameFinished)
     {

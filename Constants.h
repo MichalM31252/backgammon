@@ -36,8 +36,8 @@ const int boardStartingX = 2;
 const int boardStartingY = 1;
 
 const int amountOfFieldsInQuarter = amountOfFields / quarters;
-const int fieldHeight = 10; // DEFAULT 10
-const int fieldWidth = 5; // DEFAULT 5
+const int fieldHeight = 11; // DEFAULT 11
+const int fieldWidth = 5;
 
 const int quarterWidth = amountOfFieldsInQuarter * (fieldWidth - 1) + 1; // this is because after the first verical line the next line is printed after 4 rows
 const int quarterHeight = fieldHeight;
@@ -56,6 +56,7 @@ const char* const topAndBottomBorderSymbol = "-";
 const char* const leftAndRightBorderSymbol = "|";
 const char* const leftCounterSymbol = "\\";
 const char* const rightCounterSymbol = "/";
+const char* const pawnSymbol = "o";
 const char* const space = " ";
 
 
