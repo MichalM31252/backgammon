@@ -122,35 +122,32 @@ void decideOnTheColorOfThePawn(Board* board, int* currentField) {
 	}
 }
 
+void printTheSymbolForPawn(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField, const char* const symbol) {
+	decideOnTheColorOfThePawn(board, currentField);
+	gotoxy(j + startingX - 1, i + startingY - 1);
+	cputs(symbol);
+	textcolor(7);
+}
+
 bool decideIfPawnShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int *currentField) {
 	if (*countToEndOfField == fieldWidth / 2 + 1) { // check if we are currently in the middle of the field
 		if (board->fields[*currentField - 1]->numberOfPawns >= i - margin) { // check if there are any checkers in the field
 			if (i > margin && i < fieldHeight - margin) { // check if we are in a place where we can place checkers
-				decideOnTheColorOfThePawn(board, currentField);
-				gotoxy(j + startingX - 1, i + startingY - 1);
-				cputs(pawnSymbol);
-				textcolor(7);
+				printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, pawnSymbol);
 				return true;
 			}
 			if (i > margin && i == fieldHeight - margin) {
 				int theAmountOfPawnsThatWasPlaced = i - margin;
 				int amountOfPawnsLeft = board->fields[*currentField - 1]->numberOfPawns - theAmountOfPawnsThatWasPlaced;
 				if (amountOfPawnsLeft == 1) {
-					decideOnTheColorOfThePawn(board, currentField);
-					gotoxy(j + startingX - 1, i + startingY - 1);
-					cputs(pawnSymbol);
-					textcolor(7);
+					printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, pawnSymbol);
 					return true;
 				}
 				else {
 					char apl[20];
 					sprintf(apl, "%d", amountOfPawnsLeft+1);
 					const char* aplConstChar = apl;
-
-					decideOnTheColorOfThePawn(board, currentField);
-					gotoxy(j + startingX - 1, i + startingY - 1);
-					cputs(aplConstChar);
-					textcolor(7);
+					printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, aplConstChar);
 					return true;
 				}
 			}

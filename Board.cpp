@@ -36,7 +36,10 @@ void setUpBoard(Board* board, Player *red, Player *white) {
 	// also add here the list of players
 
 	initBoard(board);
-	setupFieldsFromFile(board, red, white);
+
+	setUpDiceBag(board, red, white);
+
+	setupBoardFromFile(board, red, white);
 	setUpBar(board);
 	//setUpCourt(board, players->id, red.id);
 	//setUpCourt(board, &white, white.id);
@@ -44,4 +47,22 @@ void setUpBoard(Board* board, Player *red, Player *white) {
 
 	// also here should be saveCourtToFile
 	// save Bar to file 
+}
+
+void currentOwnerOfDiceBag(Board* board, Player* player) {
+	board->diceBag->player = player;
+}
+
+void setUpDiceBag(Board* board, Player* red, Player* white) {
+
+	int currentPlayerNumber = decideWhichPlayerGoesFirst();
+	DiceBag diceBag; // create the dice bag
+	if (currentPlayerNumber == idOfPlayerRed) {
+		initDiceBag(&diceBag, red);
+	}
+	if (currentPlayerNumber == idOfPlayerWhite) {
+		initDiceBag(&diceBag, white);
+	}
+
+	board->diceBag = new DiceBag();
 }

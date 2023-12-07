@@ -9,15 +9,8 @@ using namespace std;
 
 // Reading and writing to files
 
-int setupFieldsFromFile(Board* board, Player* red, Player* white)
-{
-
-	FILE* file = fopen("board_with_more_than_5_on_field.txt", "r");
-	if (file == NULL) {
-		perror("Error opening the file");
-	}
-
-	int idOfPlayer, positionOfPawn;
+int setupFieldsFromFile(Board* board, Player* red, Player* white, FILE* file) {
+	int idOfPlayer, positionOfPawn, numberOnDice;
 
 	for (int i = 0; i < amountOfPawns; i++)
 	{
@@ -36,6 +29,45 @@ int setupFieldsFromFile(Board* board, Player* red, Player* white)
 			board->fields[positionOfPawn - 1]->player = white;
 		}
 	}
+}
+
+int setupDiceBagFromFile(Board* board, Player* red, Player* white, FILE* file)
+{
+	int idOfPlayer, numberOnDice;
+	for (int i = 0; i < maximumNumberOfDicesInDiceBag; i++) {
+		if (fscanf(file, "%d %d", &idOfPlayer, &numberOnDice) != 2) {
+			printf("Error reading numbers from the file\n");
+			fclose(file);
+			return 1;
+		}
+		if (numberOnDice == 0) {
+			continue;
+		}
+		if (i == 0) {
+			if (idOfPlayer == idOfPlayerRed) {
+				initDiceBag(board->diceBag, red);
+			}
+			if (idOfPlayer == idOfPlayerWhite) {
+				initDiceBag(board->diceBag, white);
+			}
+		}
+		addNumberToDiceBag(board->diceBag, numberOnDice);
+	}
+	handleShowDiceBag(board->diceBag);
+}
+
+int setupBoardFromFile(Board* board, Player* red, Player* white)
+{
+
+	FILE* file = fopen("basic_board.txt", "r");
+	if (file == NULL) {
+		perror("Error opening the file");
+	}
+
+
+	setupFieldsFromFile(board, red, white, file);
+	setupDiceBagFromFile(board, red, white, file);
+
 
 	fclose(file);
 

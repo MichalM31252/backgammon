@@ -28,22 +28,23 @@ int main()
     srand(time(NULL)); // this line is needed for the random number generator to work properly
 
 
+    Player red, white; // Creating the players
+    initPlayer(&red, idOfPlayerRed);
+    initPlayer(&white, idOfPlayerWhite);
 
-    DiceBag diceBag; // create the dice bag
-    initDiceBag(&diceBag);
+
+
     
-    int currentPlayerNumber = decideWhichPlayerGoesFirst(); // decide which player goes first
     
-    handleRoll(&diceBag);
+    
+    // handleRoll(&diceBag);
 
     // now for each roll, we need to calculate 
     // if the user decided to use the left dice first use handlePopFront
     // if the user decided to use the right dice first use handlePopBack
     // for dublet just use handlePopFront 4 times
 
-    Player red, white; // Creating the players
-    initPlayer(&red, idOfPlayerRed);
-    initPlayer(&white, idOfPlayerWhite);
+
 
     Board board;
     setUpBoard(&board, &red, &white); // set up the board
@@ -67,5 +68,5 @@ int main()
     }
     // print the winner
 
-    emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
+    // emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
 }

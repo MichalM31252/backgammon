@@ -12,3 +12,4 @@ bool decideIfCounterSymbolShouldBePrinted(int i, int j, int startingY, int start
 void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField, int monotonocity);
 void printQuarterField(int startingY, int startingX, Board* board, int* currentField, int monotonocity);
 void handlePrint(Board *board);
+void printTheSymbolForPawn(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField, const char* const symbol);
