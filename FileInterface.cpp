@@ -95,12 +95,10 @@ int setupCourtFromFile(Board* board, Player* red, Player* white, FILE* file)
 
 void setupBoardFromFile(Board* board, Player* red, Player* white)
 {
-
 	FILE* file = fopen("basic_board.txt", "r");
 	if (file == NULL) {
 		perror("Error opening the file");
 	}
-
 
 	setupFieldsFromFile(board, red, white, file);
 	setupDiceBagFromFile(board, red, white, file);
@@ -111,6 +109,42 @@ void setupBoardFromFile(Board* board, Player* red, Player* white)
 
 }
 
+void saveFieldsToFile(Board* board, FILE* file)
+{
+	for (int i = 0; i < amountOfFields; i++)
+	{
+		if (board->fields[i]->numberOfPawns != 0) {
+			for (int j = 0; j < board->fields[i]->numberOfPawns; j++) {
+				fprintf(file, "%d %d\n", board->fields[i]->player->id, i + 1); // not sure about this line
+			}
+		}
+	}
+}
+
+void saveDiceBagToFile(Board* board, FILE* file)
+{
+	for (int i = 0; i < maximumNumberOfDicesInDiceBag; i++) {
+		if (board->diceBag->numberOfElements == 0 ) {
+			fprintf(file, "%d %d\n", 0, 0);
+		}
+		else if (board->diceBag->numbers[i] != 0) {
+			fprintf(file, "%d %d\n", board->diceBag->player->id, board->diceBag->numbers[i] < 0 ? 0 : board->diceBag->numbers[i]);
+		}
+	}
+}
+
+void saveBarToFile(Board* board, FILE* file)
+{
+	fprintf(file, "%d %d\n", board->bar->player->id, board->bar->numberOfPawns);
+}
+
+void saveCourtToFile(Board* board, FILE* file)
+{
+	for (int i = 0; i < amountOfCourt; i++) {
+		fprintf(file, "%d %d\n", board->court[i]->player->id, board->court[i]->numberOfPawns);
+	}
+}
+
 int saveBoardToFile(Board* board)
 {
 	FILE* file = fopen("board_save.txt", "w");
@@ -118,14 +152,10 @@ int saveBoardToFile(Board* board)
 		perror("Error opening the file");
 	}
 
-	for (int i = 0; i < amountOfFields; i++)
-	{
-		if (board->fields[i]->numberOfPawns != 0) {
-			for (int j = 0; j < board->fields[i]->numberOfPawns; j++) {
-				fprintf(file, "%d %d\n", board->fields[i]->player->id, i + 1);
-			}
-		}
-	}
+	saveFieldsToFile(board, file);
+	saveDiceBagToFile(board, file);
+	saveBarToFile(board, file);
+	saveCourtToFile(board, file);
 
 	fclose(file);
 
