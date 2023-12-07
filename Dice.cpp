@@ -34,7 +34,7 @@ void addNumberToDiceBag(DiceBag* DiceBag, int number) // this function is used t
 		DiceBag->sizeOfArray *= 2; // double the size of the array
 	}
 
-	DiceBag->numbers[DiceBag->numberOfElements] = number; // WHY THIS LINE DOESNT ADD THE SECOND ELEMENT
+	DiceBag->numbers[DiceBag->numberOfElements] = number; // the next elements are after the first one
 	DiceBag->numberOfElements++; // increase the number of elements
 }
 

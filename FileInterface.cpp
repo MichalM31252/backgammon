@@ -15,7 +15,6 @@ int setupFieldsFromFile(Board* board, Player* red, Player* white, FILE* file) {
 	for (int i = 0; i < amountOfPawns; i++)
 	{
 		if (fscanf(file, "%d %d", &idOfPlayer, &positionOfPawn) != 2) {
-			printf("Error reading numbers from the file\n");
 			fclose(file);
 			return 1;
 		}
@@ -36,7 +35,6 @@ int setupDiceBagFromFile(Board* board, Player* red, Player* white, FILE* file)
 	int idOfPlayer, numberOnDice;
 	for (int i = 0; i < maximumNumberOfDicesInDiceBag; i++) {
 		if (fscanf(file, "%d %d", &idOfPlayer, &numberOnDice) != 2) {
-			printf("Error reading numbers from the file\n");
 			fclose(file);
 			return 1;
 		}
@@ -53,10 +51,49 @@ int setupDiceBagFromFile(Board* board, Player* red, Player* white, FILE* file)
 		}
 		addNumberToDiceBag(board->diceBag, numberOnDice);
 	}
-	handleShowDiceBag(board->diceBag);
 }
 
-int setupBoardFromFile(Board* board, Player* red, Player* white)
+int setupBarFromFile(Board* board, Player* red, Player* white, FILE* file)
+{
+	int idOfPlayer, numberOfElementsInBar;
+
+	for (int i = 0; i < numberOfBars; i++) {
+		if (fscanf(file, "%d %d", &idOfPlayer, &numberOfElementsInBar) != 2) {
+			fclose(file);
+			return 1;
+		}
+
+		if (idOfPlayer == idOfPlayerRed) {
+			board->bar->player = red;
+		}
+		if (idOfPlayer == idOfPlayerWhite) {
+			board->bar->player = white;
+		}
+		board->bar->numberOfPawns = numberOfElementsInBar;
+	}
+}
+
+int setupCourtFromFile(Board* board, Player* red, Player* white, FILE* file)
+{
+	int idOfPlayer, numberOfElementsInCourt;
+
+	for (int i = 0; i < amountOfCourt; i++) {
+		if (fscanf(file, "%d %d", &idOfPlayer, &numberOfElementsInCourt) != 2) {
+			fclose(file);
+			return 1;
+		}
+
+		if (idOfPlayer == idOfPlayerRed) {
+			board->court[idOfPlayer]->player = red;
+		}
+		if (idOfPlayer == idOfPlayerWhite) {
+			board->court[idOfPlayer]->player = white;
+		}
+		board->court[idOfPlayer]->numberOfPawns = numberOfElementsInCourt;
+	}
+}
+
+void setupBoardFromFile(Board* board, Player* red, Player* white)
 {
 
 	FILE* file = fopen("basic_board.txt", "r");
@@ -67,11 +104,11 @@ int setupBoardFromFile(Board* board, Player* red, Player* white)
 
 	setupFieldsFromFile(board, red, white, file);
 	setupDiceBagFromFile(board, red, white, file);
-
+	setupBarFromFile(board, red, white, file); // this is not working
+	setupCourtFromFile(board, red, white, file); // this is not working
 
 	fclose(file);
 
-	return 0;
 }
 
 int saveBoardToFile(Board* board)

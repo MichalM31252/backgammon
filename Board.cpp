@@ -64,5 +64,5 @@ void setUpDiceBag(Board* board, Player* red, Player* white) {
 		initDiceBag(&diceBag, white);
 	}
 
-	board->diceBag = new DiceBag();
+	board->diceBag = new DiceBag(); // doesnt this line create a memory leak ???
 }

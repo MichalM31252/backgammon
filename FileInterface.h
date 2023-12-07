@@ -7,9 +7,11 @@
 
 #include "Constants.h"
 
-int setupBoardFromFile(Board* board, Player* red, Player* white);
+void setupBoardFromFile(Board* board, Player* red, Player* white);
 
-int setupDiceBagFromFile(Board* board, Player* red, Player* white, FILE* file);
 int setupFieldsFromFile(Board* board, Player* red, Player* white, FILE* file);
+int setupDiceBagFromFile(Board* board, Player* red, Player* white, FILE* file);
+int setupBarFromFile(Board* board, Player* red, Player* white, FILE* file);
+int setupCourtFromFile(Board* board, Player* red, Player* white, FILE* file);
 
 int saveBoardToFile(Board* board);

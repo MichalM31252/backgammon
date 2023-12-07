@@ -17,6 +17,7 @@ const int idOfPlayerWhite = 1;
 const int amountOfFields = 24; // DEFAULT 24
 const int amountOfCourt = 2;
 const int quarters = 4;
+const int numberOfBars = 1;
 
 const int startingPointRed = 24;
 const int startingPointWhite = 1;
