@@ -11,5 +11,4 @@ struct Player
 };
 
 
-int getIdOfNextPlayer(Player* player);
 void initPlayer(Player* player, int id);

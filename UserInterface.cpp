@@ -113,12 +113,23 @@ bool decideIfCounterSymbolShouldBePrinted(int i, int j, int startingY, int start
 	return false;
 }
 
+void decideOnTheColorOfThePawn(Board* board, int* currentField) {
+	if (board->fields[*currentField - 1]->player->id == idOfPlayerRed) {
+		textcolor(4);
+	}
+	else {
+		textcolor(7);
+	}
+}
+
 bool decideIfPawnShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int *currentField) {
 	if (*countToEndOfField == fieldWidth / 2 + 1) { // check if we are currently in the middle of the field
 		if (i > margin && i < fieldHeight - margin) { // check if we are in a place where we can place checkers
 			if (board->fields[*currentField - 1]->numberOfPawns >= i - margin) { // check if there are any checkers in the field
+				decideOnTheColorOfThePawn(board, currentField);
 				gotoxy(j + startingX - 1, i + startingY - 1);
 				cputs(pawnSymbol);
+				textcolor(7);
 				return true;
 			}
 		}
@@ -187,6 +198,12 @@ void handlePrint(Board* board) {
 	// Upper left quarter
 	int currentField = 13;
 	int monotonicity = 1;
+
+
+	// the player id doesnt work here either
+
+
+
 	printQuarterField(2, 1, board, &currentField, monotonicity);
 
 	// Lower left quarter

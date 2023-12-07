@@ -41,9 +41,14 @@ int main()
     // if the user decided to use the right dice first use handlePopBack
     // for dublet just use handlePopFront 4 times
 
+    Player red, white; // Creating the players
+    initPlayer(&red, idOfPlayerRed);
+    initPlayer(&white, idOfPlayerWhite);
+
     Board board;
-    
-    setUpBoard(&board); // set up the board
+    setUpBoard(&board, &red, &white); // set up the board
+
+    // id of players are not initalized here
 
     handlePrint(&board);
 

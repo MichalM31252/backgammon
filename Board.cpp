@@ -32,20 +32,14 @@ void setUpCourt(Board* board, Player* p, int idOfPlayer) {
 	board->court[idOfPlayer]->numberOfPawns = 0;
 }
 
-void setUpBoard(Board* board) {
+void setUpBoard(Board* board, Player *red, Player *white) {
 	// also add here the list of players
 
-	Player red, white; // Creating the players
-	initPlayer(&red, idOfPlayerRed);
-	initPlayer(&white, idOfPlayerWhite);
-
-	Player players[amountOfPlayers] = { red, white };
-
 	initBoard(board);
-	setupFieldsFromFile(board, players);
+	setupFieldsFromFile(board, red, white);
 	setUpBar(board);
-	setUpCourt(board, &red, red.id);
-	setUpCourt(board, &white, white.id);
+	//setUpCourt(board, players->id, red.id);
+	//setUpCourt(board, &white, white.id);
 	saveBoardToFile(board);
 
 	// also here should be saveCourtToFile

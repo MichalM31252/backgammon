@@ -7,5 +7,5 @@
 
 #include "Constants.h"
 
-int setupFieldsFromFile(Board* board, Player* players);
+int setupFieldsFromFile(Board* board, Player* red, Player* white);
 int saveBoardToFile(Board* board);

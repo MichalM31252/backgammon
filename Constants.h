@@ -48,8 +48,8 @@ const int boardWidth = quarterWidth * 2 + 1; // with space in the middle
 const int margin = 2;
 const int lengthBetweenNumbers = 4;
 
-const int baseColor = 0; // This is for visaual purposes only
-const int specialColor = 0; // This is for visaual purposes only
+const int baseColor = 7; // This is for visaual purposes only
+const int specialColor = 4; // This is for visaual purposes only
 
 const char* const cornerSymbol = "+";
 const char* const topAndBottomBorderSymbol = "-";
