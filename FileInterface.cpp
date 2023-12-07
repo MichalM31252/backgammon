@@ -12,7 +12,7 @@ using namespace std;
 int setupFieldsFromFile(Board* board, Player* red, Player* white)
 {
 
-	FILE* file = fopen("basic_board.txt", "r");
+	FILE* file = fopen("board_with_more_than_5_on_field.txt", "r");
 	if (file == NULL) {
 		perror("Error opening the file");
 	}
