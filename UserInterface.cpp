@@ -340,26 +340,24 @@ void handlePrint(Board* board, Player* currentPlayer) {
 }
 
 void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished) {
-	int zn = getch();
-
 	// when input == m or q stop
-	do {
-		if (zn == 'm' || zn == 'M') {
-			// handleMove(board, currentPlayer);
-			changeCurrentPlayer(currentPlayer); // after the move change the current player
-		}
 
-		if (zn == 's' || zn == 'S') {
-			// handleSave(board);
-		}
+	char character;
+	cin >> character;
 
-		if (zn == 'l' || zn == 'L') {
-			// handleLoad(board);
-		}
-
-		if (zn == 'q' || zn == 'Q') {
-			*isGameFinished = 1;
-		}
+	if (character == 'm' || character == 'M') {
+		// handleMove(board, currentPlayer);
+		changeCurrentPlayer(currentPlayer); // after the move change the current player
 	}
-	while(zn != 'm' && zn != 'M' && zn != 'q' && zn != 'Q');
+	if (character == 's' || character == 'S') {
+		// handleSave(board);
+		handleUserResponse(board, currentPlayer, isGameFinished);
+	}
+	if (character == 'l' || character == 'L') {
+		// handleLoad(board);
+		handleUserResponse(board, currentPlayer, isGameFinished);
+	}
+	if (character == 'q' || character == 'Q') {
+		*isGameFinished = 1;
+	}
 }
