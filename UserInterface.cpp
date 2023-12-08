@@ -308,9 +308,6 @@ void setupPrint(){
 }
 
 void handlePrint(Board* board, Player* currentPlayer) {
-	int zn = 0, x = 40, y = 12, attr = 7, back = 0, zero = 0;
-	char txt[32];
-
 	// if the program is compiled in pure C, then we need to initialize
 	// the library ourselves; __cplusplus is defined only if a C++ compiler
 	// is used
@@ -333,10 +330,6 @@ void handlePrint(Board* board, Player* currentPlayer) {
 	// printRolledNumbers(board->diceBag);
 
 	printMenu(board);
-
-
-	// visible after the program ends
-	return;
 }
 
 void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished) {
@@ -347,7 +340,7 @@ void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished
 
 	if (character == 'm' || character == 'M') {
 		// handleMove(board, currentPlayer);
-		changeCurrentPlayer(currentPlayer); // after the move change the current player
+		// after the move change the current player TUTAJ ZMIENIA KOLORY NIEKTORYCH POL DLACZEGO
 	}
 	if (character == 's' || character == 'S') {
 		// handleSave(board);

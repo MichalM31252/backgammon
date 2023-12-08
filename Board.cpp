@@ -69,7 +69,3 @@ void setUpDiceBag(Board* board, Player* red, Player* white) {
 
 	board->diceBag = new DiceBag(); // doesnt this line create a memory leak ???
 }
-
-Player* getCurrentPlayer(Board* board) {
-	return board->diceBag->player;
-}

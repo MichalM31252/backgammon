@@ -39,33 +39,20 @@ int main()
 
     Player* currentPlayer = getPlayerWhichGoesFirst(&red, &white); // decides which player goes first
 
-
     while (isGameFinished != 1)
     {
-        handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values
-        // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 
-
-        // now for each roll, we need to calculate 
-        // if the user decided to use the left dice first use handlePopFront
-        // if the user decided to use the right dice first use handlePopBack
-        // for dublet just use handlePopFront 4 times
-
+        handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 
         handlePrint(&board, currentPlayer);
-
         handleUserResponse(&board, currentPlayer, &isGameFinished);
-
-        // 
-        //     if (player can move)
-        //     {
-        //         player moves
-        //     }
-        //     else
-        //     {
-        //         player passes
-        //     }
+        changeCurrentPlayer(currentPlayer, &red, &white);
     }
     _setcursortype(_NORMALCURSOR);
     // print the winner
 
     // emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program 
 }
+
+// now for each roll, we need to calculate 
+// if the user decided to use the left dice first use handlePopFront
+// if the user decided to use the right dice first use handlePopBack
+// for dublet just use handlePopFront 4 times
