@@ -24,7 +24,7 @@ using namespace std;
 int main()
 {
     srand(time(NULL));
-    bool isGameFinished = false;
+    int isGameFinished = 0;
 
      // this line is needed for the random number generator to work properly
 
@@ -40,8 +40,8 @@ int main()
     Player* currentPlayer = getPlayerWhichGoesFirst(&red, &white); // decides which player goes first
 
 
-    //while (!isGameFinished)
-    //{
+    while (isGameFinished != 1)
+    {
         handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values
         // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 
 
@@ -52,6 +52,7 @@ int main()
 
         handlePrint(&board, currentPlayer);
 
+        handleUserResponse(&board, currentPlayer, &isGameFinished);
 
         // 
         //     if (player can move)
@@ -62,9 +63,7 @@ int main()
         //     {
         //         player passes
         //     }
-
-        changeCurrentPlayer(currentPlayer);
-    //}
+    }
     // print the winner
 
     // emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program 

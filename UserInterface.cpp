@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include<stdio.h>
-#include"conio2.h"
+#include <stdio.h>
+#include "conio2.h"
 
 #include "Pawn.h"
 #include "Board.h"
@@ -12,8 +12,6 @@
 using namespace std;
 
 // Reading input from the user and printing output to the user
-
-
 
 bool decideIfCornerShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField) {
 	if ((i == 1 && j == 1) || (i == quarterHeight && j == 1) || (i == 1 && j == quarterWidth) || (i == quarterHeight && j == quarterWidth)) {
@@ -339,4 +337,29 @@ void handlePrint(Board* board, Player* currentPlayer) {
 
 	// visible after the program ends
 	return;
+}
+
+void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished) {
+	int zn = getch();
+
+	// when input == m or q stop
+	do {
+		if (zn == 'm' || zn == 'M') {
+			// handleMove(board, currentPlayer);
+			changeCurrentPlayer(currentPlayer); // after the move change the current player
+		}
+
+		if (zn == 's' || zn == 'S') {
+			// handleSave(board);
+		}
+
+		if (zn == 'l' || zn == 'L') {
+			// handleLoad(board);
+		}
+
+		if (zn == 'q' || zn == 'Q') {
+			*isGameFinished = 1;
+		}
+	}
+	while(zn != 'm' && zn != 'M' && zn != 'q' && zn != 'Q');
 }
