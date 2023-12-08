@@ -102,8 +102,10 @@ void setupBoardFromFile(Board* board, Player* red, Player* white)
 
 	setupFieldsFromFile(board, red, white, file);
 	setupDiceBagFromFile(board, red, white, file);
-	setupBarFromFile(board, red, white, file); // this is not working
-	setupCourtFromFile(board, red, white, file); // this is not working
+	setupBarFromFile(board, red, white, file); 
+	setupCourtFromFile(board, red, white, file); 
+	
+	// setup current player from file here
 
 	fclose(file);
 
@@ -145,7 +147,12 @@ void saveCourtToFile(Board* board, FILE* file)
 	}
 }
 
-int saveBoardToFile(Board* board)
+void saveCurrentPlayerToFile(Player* player, FILE* file)
+{
+	fprintf(file, "%d\n", player->id);
+}
+
+int saveBoardToFile(Board* board, Player* player)
 {
 	FILE* file = fopen("board_save.txt", "w");
 	if (file == NULL) {
@@ -156,7 +163,7 @@ int saveBoardToFile(Board* board)
 	saveDiceBagToFile(board, file);
 	saveBarToFile(board, file);
 	saveCourtToFile(board, file);
-
+	saveCurrentPlayerToFile(player, file);
 
 	fclose(file);
 

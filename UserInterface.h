@@ -11,7 +11,7 @@ bool decideIfBorderShouldBePrinted(int i, int j, int startingY, int startingX, i
 bool decideIfCounterSymbolShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField);
 void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField, int monotonocity);
 void printQuarterField(int startingY, int startingX, Board* board, int* currentField, int monotonocity);
-void handlePrint(Board *board);
+void handlePrint(Board *board, Player* currentPlayer);
 void printTheSymbolForPawn(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField, const char* const symbol);
 int getNumberOfPawnsOnBar(Board* board, int playerId);
 void printBarStatus(Board* board);

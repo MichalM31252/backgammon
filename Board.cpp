@@ -50,7 +50,7 @@ void setUpBoard(Board* board, Player *red, Player *white) { // this only takes t
 
 
 
-	// saveBoardToFile(board); this line is for saving the currently loaded board into the file
+	// saveBoardToFile(board, currentPlayer); this line is for saving the currently loaded board into the file, add currentPlayer where this needs to be saved
 
 }
 

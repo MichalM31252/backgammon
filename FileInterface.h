@@ -14,4 +14,4 @@ int setupDiceBagFromFile(Board* board, Player* red, Player* white, FILE* file);
 int setupBarFromFile(Board* board, Player* red, Player* white, FILE* file);
 int setupCourtFromFile(Board* board, Player* red, Player* white, FILE* file);
 
-int saveBoardToFile(Board* board);
+int saveBoardToFile(Board* board, Player* Player);

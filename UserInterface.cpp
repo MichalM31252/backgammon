@@ -224,11 +224,11 @@ void printBarStatus(Board* board) {
 
 	gotoxy(currentX, currentY);
 	char temp[50];
-	sprintf(temp, "Number of red player's pawns on the bar: %d", getNumberOfPawnsOnBar(board, idOfPlayerRed));
+	sprintf(temp, "Number of red player's pawns in the bar: %d", getNumberOfPawnsOnBar(board, idOfPlayerRed));
 	cputs((const char*)temp);
 
 	gotoxy(currentX, currentY+1);
-	sprintf(temp, "Number of white player's pawns on the bar: %d", getNumberOfPawnsOnBar(board, idOfPlayerWhite));
+	sprintf(temp, "Number of white player's pawns in the bar: %d", getNumberOfPawnsOnBar(board, idOfPlayerWhite));
 	cputs((const char*)temp);
 }
 
@@ -246,8 +246,30 @@ void printCourtStatus(Board* board) {
 	cputs((const char*)temp);
 }
 
+void printCurrentTurn(Player* currentPlayer) {
+	int currentY = boardHeight + 2 + 3 + 3;
+	int currentX = 1;
+
+	gotoxy(currentX, currentY);
+	if (currentPlayer->id == 0) {
+		cputs((const char*) "Current turn: Red");
+	}
+	if (currentPlayer->id == 1) {
+		cputs((const char*)"Current turn: White");
+	}
+}
+
+void printCurrentRolledNumbers(Board* board) {
+	int currentY = boardHeight + 2 + 3 + 3 + 1;
+	int currentX = 1;
+
+	gotoxy(currentX, currentY);
+	cputs((const char*)"Rolled numbers:");
+	handleShowDiceBag(board->diceBag);
+}
+
 void printMenu(Board* board) {
-	int currentY = boardHeight + 2 + 3 + 3 + 2;
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 3;
 	int currentX = 10;
 
 	gotoxy(currentX, currentY);
@@ -287,7 +309,7 @@ void setupPrint(){
 	textcolor(7); // we set the text color (7 == LIGHTGRAY)
 }
 
-void handlePrint(Board* board) {
+void handlePrint(Board* board, Player* currentPlayer) {
 	int zn = 0, x = 40, y = 12, attr = 7, back = 0, zero = 0;
 	char txt[32];
 
@@ -308,7 +330,9 @@ void handlePrint(Board* board) {
 	printBarStatus(board);
 	printCourtStatus(board);
 
-	// printCurrentPlayerInfo(currentPlayerId);
+	printCurrentTurn(currentPlayer);
+	printCurrentRolledNumbers(board);
+	// printRolledNumbers(board->diceBag);
 
 	printMenu(board);
 

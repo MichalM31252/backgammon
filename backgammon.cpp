@@ -50,7 +50,9 @@ int main()
         // if the user decided to use the right dice first use handlePopBack
         // for dublet just use handlePopFront 4 times
 
-        handlePrint(&board);
+        handlePrint(&board, currentPlayer);
+
+
         // 
         //     if (player can move)
         //     {
