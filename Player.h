@@ -12,3 +12,4 @@ struct Player
 
 
 void initPlayer(Player* player, int id);
+void changeCurrentPlayer(Player* player);

@@ -308,6 +308,8 @@ void handlePrint(Board* board) {
 	printBarStatus(board);
 	printCourtStatus(board);
 
+	// printCurrentPlayerInfo(currentPlayerId);
+
 	printMenu(board);
 
 

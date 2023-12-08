@@ -9,3 +9,12 @@ using namespace std;
 void initPlayer(Player* player, int id) {
 	player->id = id;
 }
+
+void changeCurrentPlayer(Player* player) {
+	if (player->id == 0) {
+		player->id = 1;
+	}
+	else {
+		player->id = 0;
+	}
+}

@@ -157,6 +157,7 @@ int saveBoardToFile(Board* board)
 	saveBarToFile(board, file);
 	saveCourtToFile(board, file);
 
+
 	fclose(file);
 
 	return 0;

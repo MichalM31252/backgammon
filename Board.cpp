@@ -20,6 +20,8 @@ void initBoard(Board* board) {
 	for (int i = 0; i < amountOfCourt; i++) {
 		board->court[i] = new Court();
 	}
+
+	board->diceBag = new DiceBag();
 }
 
 void setUpBar(Board* board) {
@@ -32,37 +34,42 @@ void setUpCourt(Board* board, Player* p, int idOfPlayer) {
 	board->court[idOfPlayer]->numberOfPawns = 0;
 }
 
-void setUpBoard(Board* board, Player *red, Player *white) {
+void setUpBoard(Board* board, Player *red, Player *white) { // this only takes the most basic board from file (default settings from file)
 	// also add here the list of players
-
 	initBoard(board);
 
-	setUpDiceBag(board, red, white);
+	// I need to initialize the DiceBag, Bar and court here
 
-	setupBoardFromFile(board, red, white);
-	setUpBar(board);
-	//setUpCourt(board, players->id, red.id);
-	//setUpCourt(board, &white, white.id);
-	saveBoardToFile(board);
+	 setUpDiceBag(board, red, white);
+	 setUpBar(board);
+	 setUpCourt(board, red, red->id);
+	 setUpCourt(board, white, white->id);
 
-	// also here should be saveCourtToFile
-	// save Bar to file 
-}
 
-void currentOwnerOfDiceBag(Board* board, Player* player) {
-	board->diceBag->player = player;
+	setupBoardFromFile(board, red, white); // this just writes the data into the structures from the file, the structures must be initialized by this point
+
+
+
+	// saveBoardToFile(board); this line is for saving the currently loaded board into the file
+
 }
 
 void setUpDiceBag(Board* board, Player* red, Player* white) {
 
-	int currentPlayerNumber = decideWhichPlayerGoesFirst();
-	DiceBag diceBag; // create the dice bag
-	if (currentPlayerNumber == idOfPlayerRed) {
-		initDiceBag(&diceBag, red);
-	}
-	if (currentPlayerNumber == idOfPlayerWhite) {
-		initDiceBag(&diceBag, white);
-	}
+	// 
+
+	//int currentPlayerNumber = decideWhichPlayerGoesFirst();
+	//DiceBag diceBag; // create the dice bag
+	//if (currentPlayerNumber == idOfPlayerRed) {
+	//	initDiceBag(&diceBag, red);
+	//}
+	//if (currentPlayerNumber == idOfPlayerWhite) {
+	//	initDiceBag(&diceBag, white);
+	//}
 
 	board->diceBag = new DiceBag(); // doesnt this line create a memory leak ???
+}
+
+Player* getCurrentPlayer(Board* board) {
+	return board->diceBag->player;
 }

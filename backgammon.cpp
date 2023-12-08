@@ -33,22 +33,24 @@ int main()
     initPlayer(&white, idOfPlayerWhite);
 
     Board board;
-    setUpBoard(&board, &red, &white); // set up the board
+    setUpBoard(&board, &red, &white); // set up the board (this is the most basic board loaded from the file)
+    // why isn't the dicebag read from the file here? 
+    // if in the file every value of the dice is 0 then the dicebag is not set to any player
 
-    handlePrint(&board);
+    Player* currentPlayer = getPlayerWhichGoesFirst(&red, &white); // decides which player goes first
 
-    // handleRoll(board.diceBag); // roll the dice
-    // now for each roll, we need to calculate 
-    // if the user decided to use the left dice first use handlePopFront
-    // if the user decided to use the right dice first use handlePopBack
-    // for dublet just use handlePopFront 4 times
 
-    while (!isGameFinished)
-    {
-        // id of current player
-        // 
-        // 
-        //     player rolls the dice
+    //while (!isGameFinished)
+    //{
+        handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values
+        // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 
+
+        // now for each roll, we need to calculate 
+        // if the user decided to use the left dice first use handlePopFront
+        // if the user decided to use the right dice first use handlePopBack
+        // for dublet just use handlePopFront 4 times
+
+        handlePrint(&board);
         // 
         //     if (player can move)
         //     {
@@ -58,8 +60,10 @@ int main()
         //     {
         //         player passes
         //     }
-    }
+
+        changeCurrentPlayer(currentPlayer);
+    //}
     // print the winner
 
-    // emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program
+    // emptyDiceBag(&diceBag); // this line is needed to free the memory allocated for the vector at the end of the program 
 }

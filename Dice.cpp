@@ -68,7 +68,7 @@ void handleShowDiceBag(DiceBag* DiceBag) // this function is used to print the e
 	cout << endl;
 }
 
-void handleRoll(DiceBag* DiceBag) // this function is used to roll the dice
+void handleRoll(DiceBag* DiceBag, Player* player) // this function is used to roll the dice
 {
 	int firstDice = rand() % 6 + 1; // generates a random number between 1 and 6
 	int secondDice = rand() % 6 + 1; // generates a random number between 1 and 6
@@ -85,28 +85,23 @@ void handleRoll(DiceBag* DiceBag) // this function is used to roll the dice
 		addNumberToDiceBag(DiceBag, secondDice); // adds the second dice to the Dice Bag
 	}
 
-	handleShowDiceBag(DiceBag); // prints the elements of the vector
+	DiceBag->player = player;
+
+	// handleShowDiceBag(DiceBag); // prints the elements of the vector
 }
 
-int decideWhichPlayerGoesFirst() {
+Player* getPlayerWhichGoesFirst(Player* red, Player* white) {
 
 	int firstDice = rand() % maximumNumberDiceCanRoll + 1; // generates a random number between 1 and 6
 	int secondDice = rand() % maximumNumberDiceCanRoll + 1; // generates a random number between 1 and 6
 
-	cout << "First player (Red) rolled: " << firstDice << endl;
-	cout << "Second player (White) rolled: " << secondDice << endl;
-
 	if (firstDice > secondDice) {
-		cout << "Red goes first!" << endl;
-		return idOfPlayerRed;
+		return red;
 	}
 	if (firstDice < secondDice) {
-		cout << "White goes first!" << endl;
-		return idOfPlayerWhite;
+		return white;
 	}
 	if (firstDice == secondDice) {
-		cout << "Same result was rolled! Program will throw the dice again to decide who goes first" << endl;
-		return decideWhichPlayerGoesFirst();
+		return getPlayerWhichGoesFirst(red, white);
 	}
-	return -1;
 }
