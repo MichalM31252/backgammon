@@ -246,9 +246,46 @@ void printCourtStatus(Board* board) {
 	cputs((const char*)temp);
 }
 
-//void printMenu(Board* board) {
-//
-//}
+void printMenu(Board* board) {
+	int currentY = boardHeight + 2 + 3 + 3 + 2;
+	int currentX = 10;
+
+	gotoxy(currentX, currentY);
+	char temp[50];
+	sprintf(temp, "R)OLL");
+	cputs((const char*)temp);
+	currentX += 7;
+
+	gotoxy(currentX, currentY);
+	sprintf(temp, "M)OVE");
+	cputs((const char*)temp);
+	currentX += 7;
+
+	gotoxy(currentX, currentY);
+	sprintf(temp, "S)AVE");
+	cputs((const char*)temp);
+	currentX += 7;
+
+	gotoxy(currentX, currentY);
+	sprintf(temp, "L)OAD");
+	cputs((const char*)temp);
+	currentX += 7;
+
+	gotoxy(currentX, currentY);
+	sprintf(temp, "Q)UIT");
+	cputs((const char*)temp);
+}
+
+void setupPrint(){
+	settitle("Michal, Malinowski, 197928"); // settitle sets the window title
+
+	_setcursortype(_NOCURSOR); // hide the blinking cursor
+	textmode(8); // set the text mode to 80x50
+
+	textbackground(BLACK);
+	clrscr(); // clear the screen : we fill it out with spaces with 
+	textcolor(7); // we set the text color (7 == LIGHTGRAY)
+}
 
 void handlePrint(Board* board) {
 	int zn = 0, x = 40, y = 12, attr = 7, back = 0, zero = 0;
@@ -262,19 +299,7 @@ void handlePrint(Board* board) {
 		Conio2_Init();
 	#endif
 
-	settitle("First name, Last Name, Student number"); // settitle sets the window title
-
-	_setcursortype(_NOCURSOR); // hide the blinking cursor
-
-	textbackground(BLACK);
-	clrscr(); // clear the screen : we fill it out with spaces with 
-	textcolor(7); // we set the text color (7 == LIGHTGRAY)
-
-	// we move the coursor to column 48 and row 1
-	// rows and column are numbered starting with 1
-	gotoxy(48, 1);
-	// we print out a text at a given cursor position
-	// the cursor will move by the length of the text
+	setupPrint();
 
 	printFieldNumbersTop();
 	printBoard(board);
@@ -282,6 +307,8 @@ void handlePrint(Board* board) {
 
 	printBarStatus(board);
 	printCourtStatus(board);
+
+	printMenu(board);
 
 
 	// visible after the program ends
