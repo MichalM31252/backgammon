@@ -1,8 +1,8 @@
 #pragma once
 
 // Everything related to the bar
-
 #include "Player.h"
+
 
 struct Bar
 {
@@ -10,4 +10,4 @@ struct Bar
 	Player* player;
 };
 
-void checkIfBarWorks();
+void checkBar();

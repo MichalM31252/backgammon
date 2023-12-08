@@ -13,3 +13,7 @@ void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* coun
 void printQuarterField(int startingY, int startingX, Board* board, int* currentField, int monotonocity);
 void handlePrint(Board *board);
 void printTheSymbolForPawn(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField, const char* const symbol);
+int getNumberOfPawnsOnBar(Board* board, int playerId);
+void printBarStatus(Board* board);
+void printCourtStatus(Board* board);
+void printMenu(Board* board);

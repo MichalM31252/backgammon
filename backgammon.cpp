@@ -23,38 +23,31 @@ using namespace std;
 
 int main()
 {
+    srand(time(NULL));
     bool isGameFinished = false;
 
-    srand(time(NULL)); // this line is needed for the random number generator to work properly
-
+     // this line is needed for the random number generator to work properly
 
     Player red, white; // Creating the players
     initPlayer(&red, idOfPlayerRed);
     initPlayer(&white, idOfPlayerWhite);
 
+    Board board;
+    setUpBoard(&board, &red, &white); // set up the board
 
+    handlePrint(&board);
 
-    
-    
-    
-    // handleRoll(&diceBag);
-
+    // handleRoll(board.diceBag); // roll the dice
     // now for each roll, we need to calculate 
     // if the user decided to use the left dice first use handlePopFront
     // if the user decided to use the right dice first use handlePopBack
     // for dublet just use handlePopFront 4 times
 
-
-
-    Board board;
-    setUpBoard(&board, &red, &white); // set up the board
-
-    // id of players are not initalized here
-
-    handlePrint(&board);
-
     while (!isGameFinished)
     {
+        // id of current player
+        // 
+        // 
         //     player rolls the dice
         // 
         //     if (player can move)

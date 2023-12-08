@@ -6,6 +6,6 @@ using namespace std;
 
 // Everything related to the bar
 
-void checkIfBarWorks() {
-	cout << "Bar" << endl;
+void checkBar() {
+	cout << "BAR" << endl;
 }

@@ -5,6 +5,7 @@
 
 #include "Pawn.h"
 #include "Board.h"
+#include "Bar.h"
 
 #include "Constants.h"
 
@@ -13,57 +14,6 @@ using namespace std;
 // Reading input from the user and printing output to the user
 
 
-
-void printFieldNumbersTop() {
-	int currentFieldNumberAddition = 1;
-	int countUntillNextNumber = 0;
-	for (int i = 3; i < boardWidth - 1; i++) {
-		char s[4];
-		int currentFieldNumber = amountOfFields / 2 + currentFieldNumberAddition;
-
-		if (i == (boardWidth - 1) / 2) {
-			countUntillNextNumber++;
-		}
-
-		if (countUntillNextNumber == 0) {
-			sprintf(s, "%ld", currentFieldNumber);
-			gotoxy(i, startingX);
-			cputs(s);
-			currentFieldNumberAddition++;
-			countUntillNextNumber = 4;
-		}
-		countUntillNextNumber--;
-
-	}
-}
-
-void printFieldNumbersBottom() {
-	int currentFieldNumberAddition = -1;
-	int countUntillNextNumber = 0;
-	for (int i = 3; i < boardWidth - 1; i++) {
-		char s[4];
-		int currentFieldNumber = amountOfFields / 2 + 1 + currentFieldNumberAddition;
-
-		if (i == (boardWidth - 1) / 2) {
-			countUntillNextNumber++;
-		}
-
-		if (countUntillNextNumber == 0) {
-			if (currentFieldNumber < 10) {
-				sprintf(s, " %ld", currentFieldNumber);
-			}
-			else {
-				sprintf(s, "%ld", currentFieldNumber);
-			}
-			gotoxy(i, boardHeight);
-			cputs(s);
-			currentFieldNumberAddition--;
-			countUntillNextNumber = 4;
-		}
-		countUntillNextNumber--;
-
-	}
-}
 
 bool decideIfCornerShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField) {
 	if ((i == 1 && j == 1) || (i == quarterHeight && j == 1) || (i == 1 && j == quarterWidth) || (i == quarterHeight && j == quarterWidth)) {
@@ -185,6 +135,121 @@ void printQuarterField(int startingY, int startingX, Board* board, int *currentF
 	}
 }
 
+void printFieldNumbersTop() {
+	int currentFieldNumberAddition = 1;
+	int countUntillNextNumber = 0;
+	for (int i = 3; i < boardWidth - 1; i++) {
+		char s[4];
+		int currentFieldNumber = amountOfFields / 2 + currentFieldNumberAddition;
+
+		if (i == (boardWidth - 1) / 2) {
+			countUntillNextNumber++;
+		}
+
+		if (countUntillNextNumber == 0) {
+			sprintf(s, "%ld", currentFieldNumber);
+			gotoxy(i, startingX);
+			cputs(s);
+			currentFieldNumberAddition++;
+			countUntillNextNumber = 4;
+		}
+		countUntillNextNumber--;
+
+	}
+}
+
+void printBoard(Board *board) {
+	// Upper left quarter
+	int currentField = 13;
+	int monotonicity = 1;
+	printQuarterField(2, 1, board, &currentField, monotonicity);
+
+	// Lower left quarter
+	currentField = 12;
+	monotonicity = -1;
+	printQuarterField(2 + quarterHeight + 1, 1, board, &currentField, monotonicity);
+
+	// Upper right quarter
+	currentField = 19;
+	monotonicity = 1;
+	printQuarterField(2, 1 + quarterWidth + 1, board, &currentField, monotonicity);
+
+	// Lower right quarter
+	currentField = 6;
+	monotonicity = -1;
+	printQuarterField(2 + quarterHeight + 1, 1 + quarterWidth + 1, board, &currentField, monotonicity);
+}
+
+void printFieldNumbersBottom() {
+	int currentFieldNumberAddition = -1;
+	int countUntillNextNumber = 0;
+	for (int i = 3; i < boardWidth - 1; i++) {
+		char s[4];
+		int currentFieldNumber = amountOfFields / 2 + 1 + currentFieldNumberAddition;
+
+		if (i == (boardWidth - 1) / 2) {
+			countUntillNextNumber++;
+		}
+
+		if (countUntillNextNumber == 0) {
+			if (currentFieldNumber < 10) {
+				sprintf(s, " %ld", currentFieldNumber);
+			}
+			else {
+				sprintf(s, "%ld", currentFieldNumber);
+			}
+			gotoxy(i, boardHeight);
+			cputs(s);
+			currentFieldNumberAddition--;
+			countUntillNextNumber = 4;
+		}
+		countUntillNextNumber--;
+
+	}
+}
+
+int getNumberOfPawnsOnBar(Board* board, int playerId)
+{
+	return board->bar->player->id == playerId ? board->bar->numberOfPawns : 0;
+}
+
+int getNumberOfPawnsInCourt(Board* board, int playerId)
+{
+	return board->court[playerId]->numberOfPawns;
+}
+
+void printBarStatus(Board* board) {
+	int currentY = boardHeight + 2;
+	int currentX = 1;
+
+	gotoxy(currentX, currentY);
+	char temp[50];
+	sprintf(temp, "Number of red player's pawns on the bar: %d", getNumberOfPawnsOnBar(board, idOfPlayerRed));
+	cputs((const char*)temp);
+
+	gotoxy(currentX, currentY+1);
+	sprintf(temp, "Number of white player's pawns on the bar: %d", getNumberOfPawnsOnBar(board, idOfPlayerWhite));
+	cputs((const char*)temp);
+}
+
+void printCourtStatus(Board* board) {
+	int currentY = boardHeight + 2 + 3;
+	int currentX = 1;
+
+	gotoxy(currentX, currentY);
+	char temp[50];
+	sprintf(temp, "Number of red player's pawns in the court: %d", getNumberOfPawnsInCourt(board, idOfPlayerRed));
+	cputs((const char*)temp);
+
+	gotoxy(currentX, currentY + 1);
+	sprintf(temp, "Number of white player's pawns in the court: %d", getNumberOfPawnsInCourt(board, idOfPlayerWhite));
+	cputs((const char*)temp);
+}
+
+//void printMenu(Board* board) {
+//
+//}
+
 void handlePrint(Board* board) {
 	int zn = 0, x = 40, y = 12, attr = 7, back = 0, zero = 0;
 	char txt[32];
@@ -212,28 +277,12 @@ void handlePrint(Board* board) {
 	// the cursor will move by the length of the text
 
 	printFieldNumbersTop();
-
-	// Upper left quarter
-	int currentField = 13;
-	int monotonicity = 1;
-	printQuarterField(2, 1, board, &currentField, monotonicity);
-
-	// Lower left quarter
-	currentField = 12;
-	monotonicity = -1;
-	printQuarterField(2 + quarterHeight + 1, 1, board, &currentField, monotonicity);
-	
-	// Upper right quarter
-	currentField = 19;
-	monotonicity = 1;
-	printQuarterField(2, 1 + quarterWidth + 1, board, &currentField, monotonicity);
-	
-	// Lower right quarter
-	currentField = 6;
-	monotonicity = -1;
-	printQuarterField(2 + quarterHeight + 1, 1 + quarterWidth + 1, board, &currentField, monotonicity);
-
+	printBoard(board);
 	printFieldNumbersBottom();
+
+	printBarStatus(board);
+	printCourtStatus(board);
+
 
 	// visible after the program ends
 	return;
