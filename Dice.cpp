@@ -56,6 +56,8 @@ void handlePopFront(DiceBag* DiceBag) // in case the user uses the second dice
 void emptyDiceBag(DiceBag* DiceBag) // this function is used to free the memory allocated for the vector
 {
 	delete[] DiceBag->numbers; // delete[] only deletes the pointer
+
+	delete[] DiceBag->player; // NOT SURE IF THIS IS NEEDED
 }
 
 void handleShowDiceBag(DiceBag* DiceBag) // this function is used to print the elements of the vector

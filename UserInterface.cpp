@@ -400,15 +400,18 @@ void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished
 	if (character == 'm' || character == 'M') {
 		handleMove(board, currentPlayer);
 	}
-	if (character == 's' || character == 'S') {
+	else if (character == 's' || character == 'S') {
 		handleUserResponseSave(board, currentPlayer, isGameFinished);
 		handleUserResponse(board, currentPlayer, isGameFinished, red, white); // after saving the board, we need to ask the user for another input
 	}
-	if (character == 'l' || character == 'L') {
+	else if (character == 'l' || character == 'L') {
 		handleUserResponseLoad(board, currentPlayer, isGameFinished, red, white);
 		handleUserResponse(board, currentPlayer, isGameFinished, red, white);
 	}
-	if (character == 'q' || character == 'Q') {
+	else if (character == 'q' || character == 'Q') {
 		*isGameFinished = 1;
+	}
+	else {
+		handleUserResponse(board, currentPlayer, isGameFinished, red, white);
 	}
 }

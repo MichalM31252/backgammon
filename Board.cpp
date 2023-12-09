@@ -166,10 +166,6 @@ int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
 
 }
 
-//void getEveryValidMove(Board* board, Player* currentPlayer) {
-//
-//}
-
 void removePawn(Board* board, Player* player, int fieldNumber) {
 	board->fields[fieldNumber - 1]->numberOfPawns--;
 	if (board->fields[fieldNumber - 1]->numberOfPawns == 0) {
@@ -190,5 +186,7 @@ void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
 
 	removePawn(board, player, moveFrom);
 	addPawn(board, player, moveTo);
+
+	initDiceBag(board->diceBag, player);
 }
 
