@@ -295,7 +295,7 @@ void printMenu(Board* board) {
 void setupPrint(){
 	settitle("Michal, Malinowski, 197928"); // settitle sets the window title
 
-	_setcursortype(_NOCURSOR); // hide the blinking cursor
+	//_setcursortype(_NOCURSOR); // hide the blinking cursor
 	textmode(8); // set the text mode to 80x50
 
 	textbackground(BLACK);
@@ -331,10 +331,41 @@ void clearMenuResponseField() {
 	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
 	int currentX = 1;
 
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 75; i++) {
 		gotoxy(currentX + i, currentY);
 		cputs((const char*)" ");
 	}
+}
+
+void handleMove(Board* board, Player* currentPlayer) {
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+	int currentX = 1;
+
+	clearMenuResponseField();
+
+	gotoxy(currentX, currentY);
+	cputs((const char*)"Input the number of the field from which the pawn will be taken: ");
+	int fieldFrom;
+	cin >> fieldFrom;
+
+	clearMenuResponseField();
+
+	gotoxy(currentX, currentY);
+	cputs((const char*)"Input the number of the field on which we will place the pawn: ");
+	int fieldTo;
+	cin >> fieldTo;
+
+	clearMenuResponseField();
+
+	if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo) == 1) {
+		// movePawn(board, currentPlayer, fieldFrom, fieldTo);
+		gotoxy(currentX, currentY);
+		cputs((const char*)"Pawn was moved!");
+	}
+	if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo) == 0) {
+		handleMove(board, currentPlayer);
+	}
+	
 }
 
 void handleUserResponseSave(Board* board, Player* currentPlayer, int* isGameFinished) {
@@ -348,8 +379,6 @@ void handleUserResponseSave(Board* board, Player* currentPlayer, int* isGameFini
 }
 
 void handleUserResponseLoad(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
-	
-	// i need a function here that clear the board before setupBoardFromFile happends because 
 
 	freeBoard(board);
 	setUpBoard(board, red, white, currentPlayer);
@@ -370,7 +399,7 @@ void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished
 	cin >> character;
 
 	if (character == 'm' || character == 'M') {
-		// handleMove(board, currentPlayer);
+		handleMove(board, currentPlayer);
 	}
 	if (character == 's' || character == 'S') {
 		handleUserResponseSave(board, currentPlayer, isGameFinished);

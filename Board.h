@@ -23,3 +23,6 @@ void setUpDiceBag(Board* board, Player* red, Player* white);
 void setUpBar(Board* board);
 void setUpCourt(Board* board, Player* p, int idOfPlayer);
 void freeBoard(Board* board);
+
+int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo);
+
