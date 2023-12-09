@@ -6,6 +6,7 @@
 #include "Pawn.h"
 #include "Board.h"
 #include "Bar.h"
+#include "FileInterface.h"
 
 #include "Constants.h"
 
@@ -268,13 +269,8 @@ void printCurrentRolledNumbers(Board* board) {
 
 void printMenu(Board* board) {
 	int currentY = boardHeight + 2 + 3 + 3 + 2 + 3;
-	int currentX = 10;
-
-	gotoxy(currentX, currentY);
+	int currentX = 1;
 	char temp[50];
-	sprintf(temp, "R)OLL");
-	cputs((const char*)temp);
-	currentX += 7;
 
 	gotoxy(currentX, currentY);
 	sprintf(temp, "M)OVE");
@@ -327,28 +323,62 @@ void handlePrint(Board* board, Player* currentPlayer) {
 
 	printCurrentTurn(currentPlayer);
 	printCurrentRolledNumbers(board);
-	// printRolledNumbers(board->diceBag);
 
 	printMenu(board);
 }
 
-void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished) {
-	// when input == m or q stop
+void clearMenuResponseField() {
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+	int currentX = 1;
+
+	for (int i = 0; i < 20; i++) {
+		gotoxy(currentX + i, currentY);
+		cputs((const char*)" ");
+	}
+}
+
+void handleUserResponseSave(Board* board, Player* currentPlayer, int* isGameFinished) {
+	saveBoardToFile(board, currentPlayer);
+	clearMenuResponseField();
+
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+	int currentX = 1;
+	gotoxy(currentX, currentY);
+	cputs((const char*)"Saved!");
+}
+
+void handleUserResponseLoad(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
+	
+	// i need a function here that clear the board before setupBoardFromFile happends because 
+
+	freeBoard(board);
+	setUpBoard(board, red, white, currentPlayer);
+	handlePrint(board, currentPlayer);
+	clearMenuResponseField();
+
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+	int currentX = 1;
+	gotoxy(currentX, currentY);
+	cputs((const char*)"Loaded!");
+}
+
+void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+	int currentX = 1;
 
 	char character;
 	cin >> character;
 
 	if (character == 'm' || character == 'M') {
 		// handleMove(board, currentPlayer);
-		// after the move change the current player TUTAJ ZMIENIA KOLORY NIEKTORYCH POL DLACZEGO
 	}
 	if (character == 's' || character == 'S') {
-		// handleSave(board);
-		handleUserResponse(board, currentPlayer, isGameFinished);
+		handleUserResponseSave(board, currentPlayer, isGameFinished);
+		handleUserResponse(board, currentPlayer, isGameFinished, red, white); // after saving the board, we need to ask the user for another input
 	}
 	if (character == 'l' || character == 'L') {
-		// handleLoad(board);
-		handleUserResponse(board, currentPlayer, isGameFinished);
+		handleUserResponseLoad(board, currentPlayer, isGameFinished, red, white);
+		handleUserResponse(board, currentPlayer, isGameFinished, red, white);
 	}
 	if (character == 'q' || character == 'Q') {
 		*isGameFinished = 1;

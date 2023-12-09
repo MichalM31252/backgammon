@@ -18,7 +18,8 @@ struct Board
 };
 
 void initBoard(Board* board);
-void setUpBoard(Board* board, Player* red, Player* white);
+void setUpBoard(Board* board, Player* red, Player* white, Player* currentPlayer);
 void setUpDiceBag(Board* board, Player* red, Player* white);
 void setUpBar(Board* board);
 void setUpCourt(Board* board, Player* p, int idOfPlayer);
+void freeBoard(Board* board);

@@ -29,21 +29,22 @@ int main()
      // this line is needed for the random number generator to work properly
 
     Player red, white; // Creating the players
+    Player* currentPlayer = getPlayerWhichGoesFirst(&red, &white); // THIS NEEDS TO BE FIXED
     initPlayer(&red, idOfPlayerRed);
     initPlayer(&white, idOfPlayerWhite);
 
     Board board;
-    setUpBoard(&board, &red, &white); // set up the board (this is the most basic board loaded from the file)
+    setUpBoard(&board, &red, &white, currentPlayer); // set up the board (this is the most basic board loaded from the file)
     // why isn't the dicebag read from the file here? 
     // if in the file every value of the dice is 0 then the dicebag is not set to any player
 
-    Player* currentPlayer = getPlayerWhichGoesFirst(&red, &white); // decides which player goes first
+    currentPlayer = getPlayerWhichGoesFirst(&red, &white); // decides which player goes first
 
     while (isGameFinished != 1)
     {
         handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 
         handlePrint(&board, currentPlayer);
-        handleUserResponse(&board, currentPlayer, &isGameFinished);
+        handleUserResponse(&board, currentPlayer, &isGameFinished, &red, &white);
         changeCurrentPlayer(currentPlayer, &red, &white);
     }
     _setcursortype(_NORMALCURSOR);

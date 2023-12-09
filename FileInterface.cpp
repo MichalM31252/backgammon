@@ -38,7 +38,7 @@ int setupDiceBagFromFile(Board* board, Player* red, Player* white, FILE* file)
 			fclose(file);
 			return 1;
 		}
-		if (numberOnDice == 0) {
+		if (numberOnDice <= 0 || numberOnDice > maximumNumberDiceCanRoll) {
 			continue;
 		}
 		if (i == 0) {
@@ -93,22 +93,46 @@ int setupCourtFromFile(Board* board, Player* red, Player* white, FILE* file)
 	}
 }
 
-void setupBoardFromFile(Board* board, Player* red, Player* white)
+int setupCurrentPlayerFromFile(Board* board, Player* red, Player* white, FILE* file, Player* currentPlayer) {
+	int idOfPlayer;
+
+	if (fscanf(file, "%d", &idOfPlayer) != 1) {
+		fclose(file);
+		return 1;
+	}
+
+	if (idOfPlayer == idOfPlayerRed) {
+		currentPlayer = red;
+	}
+	if (idOfPlayer == idOfPlayerWhite) {
+		currentPlayer = white;
+	}
+}
+
+void setupBoardFromFile(Board* board, Player* red, Player* white, Player* currentPlayer)
 {
 	FILE* file = fopen("basic_board.txt", "r");
 	if (file == NULL) {
 		perror("Error opening the file");
 	}
 
-	setupFieldsFromFile(board, red, white, file);
-	setupDiceBagFromFile(board, red, white, file);
-	setupBarFromFile(board, red, white, file); 
-	setupCourtFromFile(board, red, white, file); 
-	
-	// setup current player from file here
+	if (setupFieldsFromFile(board, red, white, file) == 1) {
+		perror("Error reading fields from the file");
+	}
+	if (setupDiceBagFromFile(board, red, white, file) == 1) {
+		perror("Error reading dice bag from the file");
+	}
+	if (setupBarFromFile(board, red, white, file) == 1) {
+		perror("Error reading bar from the file");
+	}
+	if (setupCourtFromFile(board, red, white, file) == 1) {
+		perror("Error reading court from the file");
+	}
+	if (setupCurrentPlayerFromFile(board, red, white, file, currentPlayer) == 1) {
+		perror("Error reading current player from the file");
+	}
 
 	fclose(file);
-
 }
 
 void saveFieldsToFile(Board* board, FILE* file)
@@ -125,13 +149,11 @@ void saveFieldsToFile(Board* board, FILE* file)
 
 void saveDiceBagToFile(Board* board, FILE* file)
 {
-	for (int i = 0; i < maximumNumberOfDicesInDiceBag; i++) {
-		if (board->diceBag->numberOfElements == 0 ) {
-			fprintf(file, "%d %d\n", 0, 0);
-		}
-		else if (board->diceBag->numbers[i] != 0) {
-			fprintf(file, "%d %d\n", board->diceBag->player->id, board->diceBag->numbers[i] < 0 ? 0 : board->diceBag->numbers[i]);
-		}
+	for (int i = 0; i < board->diceBag->numberOfElements; i++) { // for initialized dice
+		fprintf(file, "%d %d\n", board->diceBag->player->id, board->diceBag->numbers[i]);
+	}
+	for (int i = board->diceBag->numberOfElements; i < maximumNumberOfDicesInDiceBag; i++) { // for uninitialized dice
+		fprintf(file, "%d %d\n", 0, 0); 
 	}
 }
 

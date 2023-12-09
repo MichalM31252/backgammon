@@ -34,7 +34,7 @@ void setUpCourt(Board* board, Player* p, int idOfPlayer) {
 	board->court[idOfPlayer]->numberOfPawns = 0;
 }
 
-void setUpBoard(Board* board, Player *red, Player *white) { // this only takes the most basic board from file (default settings from file)
+void setUpBoard(Board* board, Player *red, Player *white, Player* currentPlayer) { // this only takes the most basic board from file (default settings from file)
 	// also add here the list of players
 	initBoard(board);
 
@@ -46,11 +46,9 @@ void setUpBoard(Board* board, Player *red, Player *white) { // this only takes t
 	 setUpCourt(board, white, white->id);
 
 
-	setupBoardFromFile(board, red, white); // this just writes the data into the structures from the file, the structures must be initialized by this point
+	setupBoardFromFile(board, red, white, currentPlayer); // this just writes the data into the structures from the file, the structures must be initialized by this point
 
-
-
-	// saveBoardToFile(board, currentPlayer); this line is for saving the currently loaded board into the file, add currentPlayer where this needs to be saved
+	 // this line is for saving the currently loaded board into the file, add currentPlayer where this needs to be saved
 
 }
 
@@ -68,4 +66,18 @@ void setUpDiceBag(Board* board, Player* red, Player* white) {
 	//}
 
 	board->diceBag = new DiceBag(); // doesnt this line create a memory leak ???
+}
+
+void freeBoard(Board* board) {
+	for (int i = 0; i < amountOfFields; i++) {
+		delete board->fields[i];
+	}
+
+	delete board->bar;
+
+	for (int i = 0; i < amountOfCourt; i++) {
+		delete board->court[i];
+	}
+
+	delete board->diceBag;
 }
