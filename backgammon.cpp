@@ -29,7 +29,7 @@ int main()
      // this line is needed for the random number generator to work properly
 
     Player red, white; // Creating the players
-    Player* currentPlayer = getPlayerWhichGoesFirst(&red, &white); // THIS NEEDS TO BE FIXED
+    Player* currentPlayer = getPlayerWhichGoesFirst(&red, &white); // currentPlayer is a pointer to a pointer
     initPlayer(&red, idOfPlayerRed);
     initPlayer(&white, idOfPlayerWhite);
 
@@ -45,7 +45,9 @@ int main()
         handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 
         handlePrint(&board, currentPlayer);
         handleUserResponse(&board, currentPlayer, &isGameFinished, &red, &white);
-        changeCurrentPlayer(currentPlayer, &red, &white);
+        changeCurrentPlayer(&currentPlayer, &red, &white);
+
+
     }
     _setcursortype(_NORMALCURSOR);
     // print the winner

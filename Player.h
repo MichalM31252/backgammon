@@ -12,4 +12,4 @@ struct Player
 
 
 void initPlayer(Player* player, int id);
-void changeCurrentPlayer(Player* player, Player* red, Player* white);
+void changeCurrentPlayer(Player** player, Player* red, Player* white);
