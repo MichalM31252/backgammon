@@ -48,6 +48,9 @@
     <ClCompile Include="conio2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EveryMoveForFieldBag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dice.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="conio2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EveryMoveForFieldBag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

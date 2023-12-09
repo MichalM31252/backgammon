@@ -358,14 +358,13 @@ void handleMove(Board* board, Player* currentPlayer) {
 	clearMenuResponseField();
 
 	if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo) == 1) {
-		// movePawn(board, currentPlayer, fieldFrom, fieldTo);
+		movePawn(board, currentPlayer, fieldFrom, fieldTo);
 		gotoxy(currentX, currentY);
 		cputs((const char*)"Pawn was moved!");
 	}
-	if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo) == 0) {
+	else {
 		handleMove(board, currentPlayer);
 	}
-	
 }
 
 void handleUserResponseSave(Board* board, Player* currentPlayer, int* isGameFinished) {

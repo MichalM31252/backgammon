@@ -25,4 +25,5 @@ void setUpCourt(Board* board, Player* p, int idOfPlayer);
 void freeBoard(Board* board);
 
 int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo);
+void movePawn(Board* board, Player* player, int moveFrom, int moveTo);
 

@@ -133,6 +133,7 @@
     <ClCompile Include="conio2.cpp" />
     <ClCompile Include="Court.cpp" />
     <ClCompile Include="Dice.cpp" />
+    <ClCompile Include="EveryMoveForFieldBag.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="FileInterface.cpp" />
     <ClCompile Include="Pawn.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Court.h" />
     <ClInclude Include="Dice.h" />
+    <ClInclude Include="EveryMoveForFieldBag.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FileInterface.h" />
     <ClInclude Include="Pawn.h" />

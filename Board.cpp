@@ -89,31 +89,30 @@ int isOwnerOfField(Board* board, Player* currentPlayer, int fieldNumber) { // if
 	return 0;
 }
 
-int canMoveToField(Board* board, Player* currentPlayer, int fieldNumber) {
-	if (board->fields[fieldNumber - 1]->numberOfPawns == 0) {
+int canMoveToField(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
+	if (board->fields[moveFrom - 1]->numberOfPawns < 1) {
+		return 0; // can't move from a field that has no pawns
+	}
+	if (board->fields[moveTo - 1]->numberOfPawns == 0) {
 		return 1; // can place the pawn since its empty
 	}
-	if (board->fields[fieldNumber - 1]->numberOfPawns > 0) {
-		if (isOwnerOfField(board, currentPlayer, fieldNumber) == 1) { // if there are multiple pawns of the current player we can place the pawn
+	if (board->fields[moveTo - 1]->numberOfPawns > 0) {
+		if (isOwnerOfField(board, currentPlayer, moveTo) == 1) { // if there are multiple pawns of the current player we can place the pawn
 			return 1;
 		}
-		if (isOwnerOfField(board, currentPlayer, fieldNumber) == 0) { // if not owner of the field
-			if (board->fields[fieldNumber - 1]->numberOfPawns == 1) {
+		if (isOwnerOfField(board, currentPlayer, moveTo) == 0) { // if not owner of the field
+			if (board->fields[moveTo - 1]->numberOfPawns == 1) {
 				return 1; // REMEMBER TO CAPTURE PAWN
 			}
-			if (board->fields[fieldNumber - 1]->numberOfPawns > 1) {
+			if (board->fields[moveTo - 1]->numberOfPawns > 1) {
 				return 0;
 			}
 		}
 	}
 }
 
-
 int isMoveInsideBoard(int moveFrom, int moveTo){
-	if (moveTo > 0 || moveTo < amountOfFields + 1) {
-		return 1;
-	}
-	if (moveFrom > 0 || moveFrom < amountOfFields + 1) {
+	if ((moveTo > 0 && moveTo < amountOfFields + 1) && (moveFrom > 0 && moveFrom < amountOfFields + 1)) {
 		return 1;
 	}
 	return 0;
@@ -141,12 +140,14 @@ int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, in
 	if (isMoveInsideBoard(moveFrom, moveTo) == 0) { // checks if the move is inside the board
 		return 0;
 	}
-	if (canMoveToField(board, currentPlayer, moveTo) == 0) { // checks if we can move to the field
+	if (canMoveToField(board, currentPlayer, moveFrom, moveTo) == 0) { // checks if we can move to the field
 		return 0;
 	}
 	if (isMovePossibleUsingDicebag(board, moveFrom, moveTo) == 0) { // checks if the move is possible using the dicebag
 		return 0;
 	}
+	// add a function to check if there are any pawns in the field we want to move from
+	// add a function to check if there are any pawns in the bar (do it outside of this function it will be more readable)
 	return 1;
 }
 
@@ -154,6 +155,7 @@ int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
 	// different function for movint to court 
 	// different function for moving from field to field
 
+	// also check if there are any pawns in the bar
 	if (isMoveInsideBoardValid(board, currentPlayer, moveFrom, moveTo) == 1) { // for moving inside the board (ONLY FIELDS)
 		return 1;
 	}
@@ -164,52 +166,29 @@ int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
 
 }
 
-void getEveryValidMove(Board* board, Player* currentPlayer) {
-	// for every field
-	//    check if currentPlayer == ownerOfTheField
-	//      if yes
-	//        for every dice in the dice bag
-	//          moveOneDice
-	//            currentPosition + valueOfDice1
-	//            currentPosition + valueOfDice2
-	//            currentPosition + valueOfDice3
-	//            currentPosition + valueOfDice4
-	//          moveMultipleDice
-	// 
-	//            for (int i = 2; i <= amountInitializedDice; i++)
-	//              int pom = 0;
-	//              for (int j = 0; j < i; j++)
-	//                pom += valueOfDice[j];
-	//              cout << pom << endl;
-	//
-	//            2: 1 2
-	//            3: 3 3 3 <- its impossible to have 3 dices, only 2 or 4
-	//            4: 4 4 4 4
-	//
-	//             so the problem is 
-	//                it will show 
-	//                  1 2
-	//                  1 2 3
-	//
-	//                but it wont show
-	//                  1 3 or 2 3
-    // 
-	//               NO THIS IS CORRECT
-	//               IF THERE ARE MORE THAN 2 DICE
-	//               THEN JUST ADD THE SAME VALUE THE SCENARIO 1 3 and 2 3 WILL NEVER HAPPEN SINCE 
-	//               THE DICE CAN ONLY DO X X X X PAST 2 DICES
+//void getEveryValidMove(Board* board, Player* currentPlayer) {
+//
+//}
 
-	// EVERY TIME THERE IS A MOVE YOU NEED TO CALCULATE EVERY POSSIBLE MOVE TO CHECK FOR FORCED BEATING 
-	// IF THERE IS A BEATING POSSIBLE YOU CANT DO ANYTHING ELSE
-	// IF THERE ARE MULTIPLE BEATINGS GET THE ONE THAT WILL MOVE THE PAWN THE FURTHEST
+void removePawn(Board* board, Player* player, int fieldNumber) {
+	board->fields[fieldNumber - 1]->numberOfPawns--;
+	if (board->fields[fieldNumber - 1]->numberOfPawns == 0) {
+		board->fields[fieldNumber - 1]->player = NULL;
+	}
+}
 
-	// THE ONLY WAY TO GET EVERY POSSIBLE MOVE IS TO MAKE AN ARRAY THAT WILL STORE THEM
-	// IF YOU FIND ONE BEATING YOU NEED TO CLEAR THE ARRAY AND ADD THE BEATING MOVE
-	// AFTER THAT YOU CAN ONLY ADD THE BEATING MOVES
-	// AFTER YOU HAVE ONLY BEATING MOVES YOU NEED TO REMOVE EVERY MOVE EXCEPT THE FURTHEST ONE
-
+void addPawn(Board* board, Player* player, int fieldNumber) {
+	board->fields[fieldNumber - 1]->numberOfPawns++;
+	board->fields[fieldNumber - 1]->player = player;
 }
 
 void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
-	
+	// need to make sure that there is a function for taking the pawn from the enemy and placing it into the bar (if the enemy has only one pawn on the field) BEFORE EXECUTING THIS FUNCTION SO THERE ARENT TWO PLAYERS
+	// ON THE SAME FIELD
+
+	// need to make sure that there is a function that takes care of the most optimal placing the pawn to the court 
+
+	removePawn(board, player, moveFrom);
+	addPawn(board, player, moveTo);
 }
+
