@@ -38,8 +38,6 @@ int main()
     // why isn't the dicebag read from the file here? 
     // if in the file every value of the dice is 0 then the dicebag is not set to any player
 
-    currentPlayer = getPlayerWhichGoesFirst(&red, &white); // decides which player goes first
-
     while (isGameFinished != 1)
     {
         handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 

@@ -325,6 +325,8 @@ void handlePrint(Board* board, Player* currentPlayer) {
 	printCurrentRolledNumbers(board);
 
 	printMenu(board);
+
+	_setcursortype(_NOCURSOR);
 }
 
 void clearMenuResponseField() {
@@ -396,6 +398,8 @@ void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished
 
 	char character;
 	cin >> character;
+
+	_setcursortype(_NORMALCURSOR);
 
 	if (character == 'm' || character == 'M') {
 		handleMove(board, currentPlayer);
