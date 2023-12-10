@@ -35,4 +35,6 @@ int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo, E
 
 void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer);
 void movePawn(Board* board, Player* player, int moveFrom, int moveTo);
+int canCapturePawn(Board* board, Player* currentPlayer, int moveFrom, int moveTo);
+void removePawn(Board* board, int fieldNumber);
 

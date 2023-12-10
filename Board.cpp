@@ -107,7 +107,7 @@ int canMoveToField(Board* board, Player* currentPlayer, int moveFrom, int moveTo
 
 int canCapturePawn(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
 	if (board->fields[moveTo - 1]->numberOfPawns == 1) {         // if there is only one pawn on the field
-		if (isOwnerOfField(board, currentPlayer, moveTo) == 0) { // if enemy is owner of the field
+		if (isOwnerOfField(board, currentPlayer, moveTo) == 0) { // if current player is not the owner of the field
 			return 1;
 		}
 	}
@@ -176,7 +176,7 @@ int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo, E
 
 }
 
-void removePawn(Board* board, Player* player, int fieldNumber) {
+void removePawn(Board* board, int fieldNumber) {
 	board->fields[fieldNumber - 1]->numberOfPawns--;
 	if (board->fields[fieldNumber - 1]->numberOfPawns == 0) {
 		board->fields[fieldNumber - 1]->player = NULL;
@@ -192,9 +192,7 @@ void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
 	// need to make sure that there is a function for taking the pawn from the enemy and placing it into the bar (if the enemy has only one pawn on the field) BEFORE EXECUTING THIS FUNCTION SO THERE ARENT TWO PLAYERS
 	// ON THE SAME FIELD
 
-	// need to make sure that there is a function that takes care of the most optimal placing the pawn to the court 
-
-	removePawn(board, player, moveFrom);
+	removePawn(board, moveFrom);
 	addPawn(board, player, moveTo);
 	
 }

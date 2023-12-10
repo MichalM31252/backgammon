@@ -400,8 +400,6 @@ void handleMove(Board* board, Player* currentPlayer) {
 
 	handleMoveInit(board, currentPlayer, everyMoveBag);
 
-	// DICEBAG WORKING HERE
-
 	if (everyMoveBag->numberOfElements > 0) { // if there are possible moves
 
 		int fieldFrom, fieldTo;
@@ -410,19 +408,16 @@ void handleMove(Board* board, Player* currentPlayer) {
 
 		clearMenuResponseField();
 
-		// DICEBAG STILL WORKING HERE
-
 		if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo, everyMoveBag) == 1) {
-
-			// DICEBAG STILL WORKING HERE
-
-
+			////////////////////////////////////////////////////////////////////////////////// DELETING ENEMY PAWN AFTER BEATING IT HERE
+			if (canCapturePawn(board, currentPlayer, fieldFrom, fieldTo) == 1) {
+				removePawn(board, fieldTo);
+			}
+			// 
 
 			movePawn(board, currentPlayer, fieldFrom, fieldTo);
 			//gotoxy(currentX, currentY);
 			//cputs((const char*)"Pawn was moved!"); It just flicks for a second
-
-			// WHY IS THE DICEBAG EMPTY HERE?
 			int sizeOfMove = abs(fieldFrom - fieldTo);
 			removeDices(board, currentPlayer, sizeOfMove);
 		}
