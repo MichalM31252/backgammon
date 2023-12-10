@@ -68,14 +68,12 @@ void addEveryMoveOneDice(EveryMoveBag* everyMoveBag, Board* board, Player* curre
 	for (int j = 0; j < board->diceBag->numberOfElements; j++) {
 		int moveFrom = currentPosition;
 		int moveTo = currentPosition + board->diceBag->numbers[j] * directionOfMoves;
-		if (canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
+		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
 			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
 			addMoveToEveryMoveBag(everyMoveBag, moveTo);  // add the current position + the value of the dice to the list 
 		}
 	}
 }
-
-
 
 void addEveryMoveMultipleDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition) {
 	int directionOfMoves = getDirectionOfMoves(currentPlayer);
@@ -87,7 +85,7 @@ void addEveryMoveMultipleDice(EveryMoveBag* everyMoveBag, Board* board, Player* 
 
 		int moveFrom = currentPosition;
 		int moveTo = currentPosition + pom * directionOfMoves;
-		if (canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
+		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
 			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
 			addMoveToEveryMoveBag(everyMoveBag, moveTo);                        // add the current position + the value of the dice to the list 
 		}
@@ -113,50 +111,4 @@ void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 			addEveryMoveMultipleDice(everyMoveBag, board, currentPlayer, currentPosition);
 		}
 	}
-
-	// add to the list every capturing move
-	// if the list is empty add every move
-	// ELSE REMOVE EVERY MOVE EXCEPT THE FURTHEST ONE FROM THE CURRENT FIELD
-
-	// for every field
-	//    check if currentPlayer == ownerOfTheField
-	//      if yes
-	//        for every dice in the dice bag
-	//          moveOneDice
-	//            currentPosition + valueOfDice1
-	//            currentPosition + valueOfDice2
-	//            currentPosition + valueOfDice3
-	//            currentPosition + valueOfDice4
-	// 
-	//          moveMultipleDice
-	//            for (int i = 2; i <= amountInitializedDice; i++)
-	//              int pom = 0;
-	//              for (int j = 0; j < i; j++)
-	//                pom += valueOfDice[j];
-	//              cout << pom << endl;
-	//
-	//            2: 1 2
-	//            3: 3 3 3 <- its impossible to have 3 dices, only 2 or 4
-	//            4: 4 4 4 4
-	//
-	//             so the problem is 
-	//                it will show 
-	//                  1 2
-	//                  1 2 3
-	//
-	//                but it wont show
-	//                  1 3 or 2 3
-	// 
-	//               NO THIS IS CORRECT
-	//               IF THERE ARE MORE THAN 2 DICE
-	//               THEN JUST ADD THE SAME VALUE THE SCENARIO 1 3 and 2 3 WILL NEVER HAPPEN SINCE 
-	//               THE DICE CAN ONLY DO X X X X PAST 2 DICES
-
-	// EVERY TIME THERE IS A MOVE YOU NEED TO CALCULATE EVERY POSSIBLE MOVE TO CHECK FOR FORCED BEATING 
-	// IF THERE IS A BEATING POSSIBLE YOU CANT DO ANYTHING ELSE
-	// IF THERE ARE MULTIPLE BEATINGS GET THE ONE THAT WILL MOVE THE PAWN THE FURTHEST
-
-	// THE ONLY WAY TO GET EVERY POSSIBLE MOVE IS TO MAKE AN ARRAY THAT WILL STORE THEM
-	// FIRST ONLY ADD ONLY CAPTURING MOVES
-
 }
