@@ -42,7 +42,7 @@ int main()
     {
         handleRoll(board.diceBag, currentPlayer); // roll the dice, this function should overwrite the diceBag with the new values // loading of the board from the file from the menu function should be below this one because handleRoll overwrites the dicebag 
         handlePrint(&board, currentPlayer);
-        handleUserResponse(&board, currentPlayer, &isGameFinished, &red, &white);
+        handleUserRes(&board, currentPlayer, &isGameFinished, &red, &white);
         changeCurrentPlayer(&currentPlayer, &red, &white);
     }
     _setcursortype(_NORMALCURSOR);

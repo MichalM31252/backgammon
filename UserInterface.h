@@ -18,4 +18,4 @@ void printCourtStatus(Board* board);
 void printMenu(Board* board);
 
 void handlePrint(Board* board, Player* currentPlayer);
-void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white);
+void handleUserRes(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white);

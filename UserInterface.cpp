@@ -79,6 +79,21 @@ void printTheSymbolForPawn(int i, int j, int startingY, int startingX, int* coun
 	textcolor(7);
 }
 
+void printNumberOfHiddenPawns(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField) {
+	int theAmountOfPawnsThatWasPlaced = i - margin;
+	int amountOfPawnsLeft = board->fields[*currentField - 1]->numberOfPawns - theAmountOfPawnsThatWasPlaced;
+	if (amountOfPawnsLeft == 1) {
+		printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, pawnSymbol);
+	}
+	else {
+		char apl[20];
+		sprintf(apl, "%d", amountOfPawnsLeft + 1);
+		const char* aplConstChar = apl;
+		printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, aplConstChar);
+	}
+}
+
+
 bool decideIfPawnShouldBePrinted(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int *currentField) {
 	if (*countToEndOfField == fieldWidth / 2 + 1) { // check if we are currently in the middle of the field
 		if (board->fields[*currentField - 1]->numberOfPawns >= i - margin) { // check if there are any checkers in the field
@@ -87,19 +102,8 @@ bool decideIfPawnShouldBePrinted(int i, int j, int startingY, int startingX, int
 				return true;
 			}
 			if (i > margin && i == fieldHeight - margin) {
-				int theAmountOfPawnsThatWasPlaced = i - margin;
-				int amountOfPawnsLeft = board->fields[*currentField - 1]->numberOfPawns - theAmountOfPawnsThatWasPlaced;
-				if (amountOfPawnsLeft == 1) {
-					printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, pawnSymbol);
-					return true;
-				}
-				else {
-					char apl[20];
-					sprintf(apl, "%d", amountOfPawnsLeft+1);
-					const char* aplConstChar = apl;
-					printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, aplConstChar);
-					return true;
-				}
+				printNumberOfHiddenPawns(i, j, startingY, startingX, countToEndOfField, board, currentField);
+				return true;
 			}
 		}	
 	}
@@ -357,41 +361,52 @@ void removeDices(Board* board, Player* currentPlayer, int sizeOfMove) { // remov
 	}
 }
 
+void handleMoveInput(int* fieldFrom, int* fieldTo) {
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+	int currentX = 1;
+
+	clearMenuResponseField();
+
+	gotoxy(currentX, currentY);
+	cputs((const char*)"Input the number of the field from which the pawn will be taken: ");
+
+	cin >> *fieldFrom;
+
+	clearMenuResponseField();
+
+	gotoxy(currentX, currentY);
+	cputs((const char*)"Input the number of the field on which we will place the pawn: ");
+
+	cin >> *fieldTo;
+}
+
+void handleMoveInit(Board* board, Player* currentPlayer, EveryMoveBag* everyMoveBag) {
+	initEveryMoveBag(everyMoveBag);
+	genEveryMove(everyMoveBag, board, currentPlayer);
+
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 3 + 2;
+	int currentX = 1;
+
+	gotoxy(currentX, currentY);
+	handlePrint(board, currentPlayer);
+	handleShowEveryMoveBag(everyMoveBag);
+}
+
 void handleMove(Board* board, Player* currentPlayer) {
 
 	int currentY, currentX;
 
 	EveryMoveBag* everyMoveBag = new EveryMoveBag();
-	initEveryMoveBag(everyMoveBag);
-	genEveryMove(everyMoveBag, board, currentPlayer);
 
-	currentY = boardHeight + 2 + 3 + 3 + 2 + 3 + 2;
-	currentX = 1;
-
-	gotoxy(currentX, currentY);
-	handlePrint(board, currentPlayer);
-	handleShowEveryMoveBag(everyMoveBag);
+	handleMoveInit(board, currentPlayer, everyMoveBag);
 
 	// DICEBAG WORKING HERE
 
 	if (everyMoveBag->numberOfElements > 0) { // if there are possible moves
 
-		currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
-		currentX = 1;
+		int fieldFrom, fieldTo;
 
-		clearMenuResponseField();
-
-		gotoxy(currentX, currentY);
-		cputs((const char*)"Input the number of the field from which the pawn will be taken: ");
-		int fieldFrom;
-		cin >> fieldFrom;
-
-		clearMenuResponseField();
-
-		gotoxy(currentX, currentY);
-		cputs((const char*)"Input the number of the field on which we will place the pawn: ");
-		int fieldTo;
-		cin >> fieldTo;
+		handleMoveInput(&fieldFrom, &fieldTo);
 
 		clearMenuResponseField();
 
@@ -400,6 +415,8 @@ void handleMove(Board* board, Player* currentPlayer) {
 		if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo, everyMoveBag) == 1) {
 
 			// DICEBAG STILL WORKING HERE
+
+
 
 			movePawn(board, currentPlayer, fieldFrom, fieldTo);
 			//gotoxy(currentX, currentY);
@@ -422,7 +439,7 @@ void handleMove(Board* board, Player* currentPlayer) {
 
 }
 
-void handleUserResponseSave(Board* board, Player* currentPlayer, int* isGameFinished) {
+void handleUserResS(Board* board, Player* currentPlayer, int* isGameFinished) {
 	saveBoardToFile(board, currentPlayer);
 	clearMenuResponseField();
 
@@ -432,7 +449,7 @@ void handleUserResponseSave(Board* board, Player* currentPlayer, int* isGameFini
 	cputs((const char*)"Saved!");
 }
 
-void handleUserResponseLoad(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
+void handleUserResL(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
 
 	freeBoard(board);
 	setUpBoard(board, red, white, currentPlayer);
@@ -445,31 +462,47 @@ void handleUserResponseLoad(Board* board, Player* currentPlayer, int* isGameFini
 	cputs((const char*)"Loaded!");
 }
 
-void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
-	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
-	int currentX = 1;
-
-	char character;
-	cin >> character;
-
-	_setcursortype(_NORMALCURSOR);
-
-	if (character == 'm' || character == 'M') {
+void handleM(Board* board, Player* currentPlayer, char character) {
+	if (character == 'm') {
 		handleMove(board, currentPlayer);
 		initDiceBag(board->diceBag, currentPlayer); // reset the dicebag
 	}
-	else if (character == 's' || character == 'S') {
-		handleUserResponseSave(board, currentPlayer, isGameFinished);
-		handleUserResponse(board, currentPlayer, isGameFinished, red, white); // after saving the board, we need to ask the user for another input
-	}
-	else if (character == 'l' || character == 'L') {
-		handleUserResponseLoad(board, currentPlayer, isGameFinished, red, white);
-		handleUserResponse(board, currentPlayer, isGameFinished, red, white);
-	}
-	else if (character == 'q' || character == 'Q') {
+}
+
+void handleQ(Board* board, Player* currentPlayer, char character, int* isGameFinished) {
+	if (character == 'q') {
 		*isGameFinished = 1;
 	}
-	else {
-		handleUserResponse(board, currentPlayer, isGameFinished, red, white);
+}
+
+int isCharacterCorrect(char character) {
+	if (character == 'm' || character == 's' || character == 'l' || character == 'q') {
+		return 1;
+	}
+	return 0;
+}
+
+void handleMQ(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white, char character) {
+	_setcursortype(_NORMALCURSOR);
+	handleM(board, currentPlayer, character);
+	handleQ(board, currentPlayer, character, isGameFinished);
+}
+
+void handleUserRes(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
+	char character;
+	cin >> character;
+	if (isCharacterCorrect(character) == 1) { // user given correct input
+		handleMQ(board, currentPlayer, isGameFinished, red, white, character);
+		if (character == 's') {
+			handleUserResS(board, currentPlayer, isGameFinished);
+			handleUserRes(board, currentPlayer, isGameFinished, red, white); // after saving the board, we need to ask the user for another input
+		}
+		if (character == 'l') {
+			handleUserResL(board, currentPlayer, isGameFinished, red, white);
+			handleUserRes(board, currentPlayer, isGameFinished, red, white); // after loading the board, we need to ask the user for another input
+		}
+	}
+	else{ // user gave incorrect input
+		handleUserRes(board, currentPlayer, isGameFinished, red, white);
 	}
 }

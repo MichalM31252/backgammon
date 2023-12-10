@@ -122,7 +122,7 @@ int isMoveInsideBoard(int moveFrom, int moveTo){
 }
 
 int isMoveToCourt(int moveFrom, int moveTo) {
-	if (moveTo == courtIndexRed + 1 || moveTo == courtIndexWhite + 1) {
+	if (moveTo == courtFieldNumberRed || moveTo == courtFieldNumberWhite) {
 		return 1;
 	}
 	return 0;
@@ -201,17 +201,21 @@ void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
 
 /////////////
 
+void addMoveBase(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition, int collectCapturingMoves, int moveFrom, int moveTo) {
+	if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) { // if you add here a 3rd && statement that checks if the values are the same then you will get rid of the bug that shows the same move multiple times
+		if (canCapturePawn(board, currentPlayer, moveFrom, moveTo) == collectCapturingMoves) { // if the move is a capturing move and we want to collect only capturing moves
+			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
+			addMoveToEveryMoveBag(everyMoveBag, moveTo);  // add the current position + the value of the dice to the list 
+		}
+	}
+}
+
 void addMoveOneDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition, int collectCapturingMoves) {
 	int directionOfMoves = getDirectionOfMoves(currentPlayer);
 	for (int j = 0; j < board->diceBag->numberOfElements; j++) {
 		int moveFrom = currentPosition;
 		int moveTo = currentPosition + board->diceBag->numbers[j] * directionOfMoves;
-		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) { // if you add here a 3rd && statement that checks if the values are the same then you will get rid of the bug that shows the same move multiple times
-			if (canCapturePawn(board, currentPlayer, moveFrom, moveTo) == collectCapturingMoves) { // if the move is a capturing move and we want to collect only capturing moves
-				addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
-				addMoveToEveryMoveBag(everyMoveBag, moveTo);  // add the current position + the value of the dice to the list 
-			}
-		}
+		addMoveBase(everyMoveBag, board, currentPlayer, currentPosition, collectCapturingMoves, moveFrom, moveTo);
 	}
 }
 
@@ -222,15 +226,9 @@ void addMoveMultipleDice(EveryMoveBag* everyMoveBag, Board* board, Player* curre
 		for (int k = 0; k < j; k++) {
 			pom += board->diceBag->numbers[k];
 		}
-
 		int moveFrom = currentPosition;
 		int moveTo = currentPosition + pom * directionOfMoves;
-		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
-			if (canCapturePawn(board, currentPlayer, moveFrom, moveTo) == collectCapturingMoves) { // if the move is a capturing move and we want to collect only capturing moves
-				addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
-				addMoveToEveryMoveBag(everyMoveBag, moveTo);                        // add the current position + the value of the dice to the list 
-			} 
-		}
+		addMoveBase(everyMoveBag, board, currentPlayer, currentPosition, collectCapturingMoves, moveFrom, moveTo);
 	}
 }
 
@@ -244,6 +242,19 @@ void collectMoves(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 	}
 }
 
+void capturingMovesPresent(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer) {
+	int courtPosition = getPositionOfCourt(currentPlayer);
+	int currentClosestToCourt = everyMoveBag->numbers[1];
+	int currentClosestToCourtIndex = 1;
+	for (int i = 1; i < everyMoveBag->numberOfElements; i += 2) {
+		if (abs(courtPosition - everyMoveBag->numbers[i]) < abs(courtPosition - currentClosestToCourt)) {
+			currentClosestToCourt = everyMoveBag->numbers[i];
+			currentClosestToCourtIndex = i;
+		}
+	}
+	removeEverythingExceptTheseTwo(everyMoveBag, everyMoveBag->numbers[currentClosestToCourtIndex - 1], currentClosestToCourt); // get the one that is the closest to court
+}
+
 void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer) {
 	int directionOfMoves = getDirectionOfMoves(currentPlayer);
 
@@ -252,16 +263,7 @@ void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 		collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 0); // just collect move that fit the rest of criteria
 	}
 	else { // if there are capturing moves
-		int courtPosition = getPositionOfCourt(currentPlayer);
-		int currentClosestToCourt = everyMoveBag->numbers[1];
-		int currentClosestToCourtIndex = 1;
-		for (int i = 1; i < everyMoveBag->numberOfElements; i+=2) {
-			if(abs(courtPosition - everyMoveBag->numbers[i]) < abs(courtPosition - currentClosestToCourt)) {
-				currentClosestToCourt = everyMoveBag->numbers[i];
-				currentClosestToCourtIndex = i;
-			}
-		}
-		removeEverythingExceptTheseTwo(everyMoveBag, everyMoveBag->numbers[currentClosestToCourtIndex-1], currentClosestToCourt); // get the one that is the closest to court
+		capturingMovesPresent(everyMoveBag, board, currentPlayer); // get the capturing moves that are the closest to the court
 	}
 	// DICEBAG WORKING HERE
 }

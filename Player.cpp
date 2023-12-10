@@ -34,9 +34,9 @@ int getDirectionOfMoves(Player* currentPlayer) {
 
 int getPositionOfCourt(Player* currentPlayer) {
 	if (currentPlayer->id == 0) {
-		return courtIndexRed;
+		return courtFieldNumberRed;
 	}
 	else if (currentPlayer->id == 1) {
-		return courtIndexWhite;
+		return courtFieldNumberWhite;
 	}
 }

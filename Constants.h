@@ -25,8 +25,8 @@ const int startingPointWhite = 1;
 const int directionOfMovementRed = 1;      /////////////////////////////////////////////////////////
 const int directionOfMovementWhite = -1;   /////////////////////////////////////////////////////////
 
-const int courtIndexRed = 24;
-const int courtIndexWhite = 0;
+const int courtFieldNumberRed = 25;
+const int courtFieldNumberWhite = 0;
 
 const int startOfTheHomeBoardRed = 19;
 const int endOfTheHomeBoardRed = 24;

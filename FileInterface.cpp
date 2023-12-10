@@ -109,6 +109,7 @@ int setupCurrentPlayerFromFile(Board* board, Player* red, Player* white, FILE* f
 	}
 }
 
+
 void setupBoardFromFile(Board* board, Player* red, Player* white, Player* currentPlayer)
 {
 	FILE* file = fopen("basic_board.txt", "r");
@@ -117,19 +118,19 @@ void setupBoardFromFile(Board* board, Player* red, Player* white, Player* curren
 	}
 
 	if (setupFieldsFromFile(board, red, white, file) == 1) {
-		perror("Error reading fields from the file");
+		perror("Error");
 	}
 	if (setupDiceBagFromFile(board, red, white, file) == 1) {
-		perror("Error reading dice bag from the file");
+		perror("Error");
 	}
 	if (setupBarFromFile(board, red, white, file) == 1) {
-		perror("Error reading bar from the file");
+		perror("Error");
 	}
 	if (setupCourtFromFile(board, red, white, file) == 1) {
-		perror("Error reading court from the file");
+		perror("Error");
 	}
 	if (setupCurrentPlayerFromFile(board, red, white, file, currentPlayer) == 1) {
-		perror("Error reading current player from the file");
+		perror("Error");
 	}
 
 	fclose(file);
