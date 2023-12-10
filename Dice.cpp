@@ -61,7 +61,7 @@ void emptyDiceBag(DiceBag* DiceBag) // this function is used to free the memory 
 {
 	delete[] DiceBag->numbers; // delete[] only deletes the pointer
 
-	delete[] DiceBag->player; // NOT SURE IF THIS IS NEEDED
+	delete[] DiceBag->player; //
 }
 
 void handleShowDiceBag(DiceBag* DiceBag) // this function is used to print the elements of the vector

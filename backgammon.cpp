@@ -35,7 +35,6 @@ int main()
 
     Board board;
     setUpBoard(&board, &red, &white, currentPlayer); // set up the board (this is the most basic board loaded from the file)
-    // why isn't the dicebag read from the file here? 
     // if in the file every value of the dice is 0 then the dicebag is not set to any player
 
     while (isGameFinished != 1)
@@ -46,5 +45,4 @@ int main()
         changeCurrentPlayer(&currentPlayer, &red, &white);
     }
     _setcursortype(_NORMALCURSOR);
-    // print the winner
 }

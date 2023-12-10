@@ -133,7 +133,6 @@ void printQuarterField(int startingY, int startingX, Board* board, int *currentF
 	for (int j = 1; j <= quarterWidth; j++ ) { // j is for the column
 		for (int i = 1; i <= quarterHeight; i++) { // i is for the row
 			printPartOfTheQuarter(i, j, startingY, startingX, &countToEndOfField, board, currentField, monotonocity);
-			// it should be around here
 		}
 		countToEndOfField++;
 	}
@@ -394,7 +393,7 @@ void handleMoveInit(Board* board, Player* currentPlayer, EveryMoveBag* everyMove
 
 void handleMoveFunctionality(Board* board, Player* currentPlayer, int fieldFrom, int fieldTo) {
 	if (isMoveToCourt(fieldFrom, fieldTo) == 1) {
-		removePawn(board, fieldFrom);  // WAS FIELD TO CHANGED TO FIELD FROM?
+		removePawn(board, fieldFrom); 
 		addPawnToCourt(board, currentPlayer, fieldFrom); // this line laready deletes the pawn from the field
 	}
 	else {
@@ -413,7 +412,7 @@ void handleMove(Board* board, Player* currentPlayer) {
 
 	EveryMoveBag* everyMoveBag = new EveryMoveBag();
 
-	handleMoveInit(board, currentPlayer, everyMoveBag); // problem tutaj
+	handleMoveInit(board, currentPlayer, everyMoveBag);
 
 	if (everyMoveBag->numberOfElements > 0) { // if there are possible moves
 

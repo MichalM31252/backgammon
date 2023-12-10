@@ -95,7 +95,7 @@ void setUpBoard(Board* board, Player *red, Player *white, Player* currentPlayer)
 
 void setUpDiceBag(Board* board, Player* red, Player* white) {
 
-	board->diceBag = new DiceBag(); // doesnt this line create a memory leak ???
+	board->diceBag = new DiceBag();
 }
 
 void freeBoard(Board* board) {
@@ -132,7 +132,7 @@ int canMoveToField(Board* board, Player* currentPlayer, int moveFrom, int moveTo
 		}
 		if (isOwnerOfField(board, currentPlayer, moveTo) == 0) { // if not owner of the field
 			if (board->fields[moveTo - 1]->numberOfPawns == 1) {
-				return 1; // REMEMBER TO CAPTURE PAWN
+				return 1;
 			}
 			if (board->fields[moveTo - 1]->numberOfPawns > 1) {
 				return 0;
@@ -142,7 +142,7 @@ int canMoveToField(Board* board, Player* currentPlayer, int moveFrom, int moveTo
 	return 0;
 }
 
-int canCapturePawn(Board* board, Player* currentPlayer, int moveFrom, int moveTo) { // THIS SHOULD NOT HAPPEND WHEN YOU ARE MOVING A PAWN TO A COURT
+int canCapturePawn(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
 	if (board->fields[moveTo - 1]->numberOfPawns == 1) {         // if there is only one pawn on the field
 		if (isOwnerOfField(board, currentPlayer, moveTo) == 0) { // if current player is not the owner of the field
 			return 1;
@@ -235,8 +235,6 @@ void addPawn(Board* board, Player* player, int fieldNumber) {
 }
 
 void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
-	// need to make sure that there is a function for taking the pawn from the enemy and placing it into the bar (if the enemy has only one pawn on the field) BEFORE EXECUTING THIS FUNCTION SO THERE ARENT TWO PLAYERS
-	// ON THE SAME FIELD
 
 	removePawn(board, moveFrom);
 	addPawn(board, player, moveTo);
@@ -303,7 +301,7 @@ void capturingMovesPresent(EveryMoveBag* everyMoveBag, Board* board, Player* cur
 int addMoveBaseRemoving(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition, int courtPosition, int moveFrom, int moveTo) {
 	if (moveTo == courtPosition) { // if you add here a 3rd && statement that checks if the values are the same then you will get rid of the bug that shows the same move multiple times
 		addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
-		addMoveToEveryMoveBag(everyMoveBag, moveTo);  // add the current position + the value of the dice to the list 
+		addMoveToEveryMoveBag(everyMoveBag, moveTo); 
 		return moveFrom;
 	}
 	return 0;
@@ -394,7 +392,6 @@ void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 
 	if (canStartRemovingPawns(board, currentPlayer) == 1) { // if every pawn is in the base}
 		collectMovesForRemoving(everyMoveBag, board, currentPlayer, directionOfMoves);
-		// IF THE LIST HERE IS EMPTY FILL IT WITH NORMAL MOVES
 		if (everyMoveBag->numberOfElements == 0) {
 			genEveryMoveDefault(everyMoveBag, board, currentPlayer, directionOfMoves);
 		}
