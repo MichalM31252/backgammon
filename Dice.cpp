@@ -37,20 +37,24 @@ void addNumberToDiceBag(DiceBag* DiceBag, int number) // this function is used t
 	DiceBag->numberOfElements++; // increase the number of elements
 }
 
-void handlePopBack(DiceBag* DiceBag) // in case the user uses the first dice
+int handlePopBack(DiceBag* DiceBag) // in case the user uses the first dice
 {
+	int temp = DiceBag->numbers[DiceBag->numberOfElements - 1]; // the last element is the one that will be popped
 	assert(DiceBag->numberOfElements > 0);
 	DiceBag->numberOfElements--;
+	return temp; // return the popped element
 }
 
-void handlePopFront(DiceBag* DiceBag) // in case the user uses the second dice
+int handlePopFront(DiceBag* DiceBag) // in case the user uses the second dice
 {
 	assert(DiceBag->numberOfElements > 0);
+	int temp = DiceBag->numbers[0];
 	for (size_t i = 0; i < DiceBag->numberOfElements - 1; i++)
 	{
 		DiceBag->numbers[i] = DiceBag->numbers[i + 1];
 	}
 	DiceBag->numberOfElements--;
+	return temp; // return the popped element
 }
 
 void emptyDiceBag(DiceBag* DiceBag) // this function is used to free the memory allocated for the vector
@@ -105,4 +109,17 @@ Player* getPlayerWhichGoesFirst(Player* red, Player* white) {
 	if (firstDice == secondDice) {
 		return getPlayerWhichGoesFirst(red, white);
 	}
+}
+
+int getDiceBagSum(DiceBag* DiceBag) {
+	int sum = 0;
+	for (int i = 0; i < DiceBag->numberOfElements; i++) // prints the elements of the vector
+	{
+		sum += DiceBag->numbers[i];
+	}
+	return sum;
+}
+
+void removeDices() {
+
 }

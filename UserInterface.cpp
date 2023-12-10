@@ -340,11 +340,26 @@ void clearMenuResponseField() {
 	}
 }
 
+void removeDices(Board* board, Player* currentPlayer, int sizeOfMove) { // remove the dices untill there are only unused dices left
+	int temp = 0;
+	for (int i = 0; i < board->diceBag->numberOfElements; i++) {
+		if (temp == sizeOfMove) {
+			break;
+		}
+		else {
+			if (board->diceBag->numbers[i] == sizeOfMove) {
+				temp += handlePopFront(board->diceBag);
+			}
+			else {
+				temp += handlePopBack(board->diceBag);
+			}
+		}
+	}
+}
+
 void handleMove(Board* board, Player* currentPlayer) {
 
 	int currentY, currentX;
-
-	// CANT BE SOONER THAN HERE
 
 	EveryMoveBag* everyMoveBag = new EveryMoveBag();
 	initEveryMoveBag(everyMoveBag);
@@ -354,38 +369,57 @@ void handleMove(Board* board, Player* currentPlayer) {
 	currentX = 1;
 
 	gotoxy(currentX, currentY);
+	handlePrint(board, currentPlayer);
 	handleShowEveryMoveBag(everyMoveBag);
 
-	//
+	// DICEBAG WORKING HERE
 
+	if (everyMoveBag->numberOfElements > 0) { // if there are possible moves
 
-	currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
-	currentX = 1;
+		currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+		currentX = 1;
 
-	clearMenuResponseField();
+		clearMenuResponseField();
 
-	gotoxy(currentX, currentY);
-	cputs((const char*)"Input the number of the field from which the pawn will be taken: ");
-	int fieldFrom;
-	cin >> fieldFrom;
-
-	clearMenuResponseField();
-
-	gotoxy(currentX, currentY);
-	cputs((const char*)"Input the number of the field on which we will place the pawn: ");
-	int fieldTo;
-	cin >> fieldTo;
-
-	clearMenuResponseField();
-
-	if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo, everyMoveBag) == 1) {
-		movePawn(board, currentPlayer, fieldFrom, fieldTo);
 		gotoxy(currentX, currentY);
-		cputs((const char*)"Pawn was moved!");
-	}
-	else {
+		cputs((const char*)"Input the number of the field from which the pawn will be taken: ");
+		int fieldFrom;
+		cin >> fieldFrom;
+
+		clearMenuResponseField();
+
+		gotoxy(currentX, currentY);
+		cputs((const char*)"Input the number of the field on which we will place the pawn: ");
+		int fieldTo;
+		cin >> fieldTo;
+
+		clearMenuResponseField();
+
+		// DICEBAG STILL WORKING HERE
+
+		if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo, everyMoveBag) == 1) {
+
+			// DICEBAG STILL WORKING HERE
+
+			movePawn(board, currentPlayer, fieldFrom, fieldTo);
+			//gotoxy(currentX, currentY);
+			//cputs((const char*)"Pawn was moved!"); It just flicks for a second
+
+			// WHY IS THE DICEBAG EMPTY HERE?
+			int sizeOfMove = abs(fieldFrom - fieldTo);
+			removeDices(board, currentPlayer, sizeOfMove);
+		}
 		handleMove(board, currentPlayer);
 	}
+
+
+	// CHECK IF EVERY DICE WAS USED -> CHECK IF SUM OF DICE IN THE BAG IS EQUAL TO THE LENFTH OF THE MOVE
+	// 
+	// IF NOT REMOVE THE DICES FROM THE DICEBAG
+	// REPEAT THIS FUNCTION
+	// 
+	// IF EVERY DICE WAS USED  DO NOTHING
+
 }
 
 void handleUserResponseSave(Board* board, Player* currentPlayer, int* isGameFinished) {
@@ -422,6 +456,7 @@ void handleUserResponse(Board* board, Player* currentPlayer, int* isGameFinished
 
 	if (character == 'm' || character == 'M') {
 		handleMove(board, currentPlayer);
+		initDiceBag(board->diceBag, currentPlayer); // reset the dicebag
 	}
 	else if (character == 's' || character == 'S') {
 		handleUserResponseSave(board, currentPlayer, isGameFinished);

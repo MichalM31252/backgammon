@@ -196,7 +196,7 @@ void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
 
 	removePawn(board, player, moveFrom);
 	addPawn(board, player, moveTo);
-	initDiceBag(board->diceBag, player); // reset the dicebag
+	
 }
 
 /////////////
@@ -244,22 +244,14 @@ void collectMoves(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 	}
 }
 
-
-
 void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer) {
-	int directionOfMoves = 0;
-	if (currentPlayer->id == 1) {
-		directionOfMoves = directionOfMovementWhite;
-	}
-	else if (currentPlayer->id == 0) {
-		directionOfMoves = directionOfMovementRed;
-	}
-	
+	int directionOfMoves = getDirectionOfMoves(currentPlayer);
+
 	collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 1); // only get capturing moves first
 	if(everyMoveBag->numberOfElements == 0) { // if there are no capturing moves
 		collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 0); // just collect move that fit the rest of criteria
 	}
-	else {
+	else { // if there are capturing moves
 		int courtPosition = getPositionOfCourt(currentPlayer);
 		int currentClosestToCourt = everyMoveBag->numbers[1];
 		int currentClosestToCourtIndex = 1;
@@ -269,8 +261,8 @@ void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 				currentClosestToCourtIndex = i;
 			}
 		}
-
-		removeEverythingExceptTheseTwo(everyMoveBag, everyMoveBag->numbers[currentClosestToCourtIndex-1], currentClosestToCourt);
+		removeEverythingExceptTheseTwo(everyMoveBag, everyMoveBag->numbers[currentClosestToCourtIndex-1], currentClosestToCourt); // get the one that is the closest to court
 	}
+	// DICEBAG WORKING HERE
 }
 

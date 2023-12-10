@@ -39,7 +39,4 @@ int getPositionOfCourt(Player* currentPlayer) {
 	else if (currentPlayer->id == 1) {
 		return courtIndexWhite;
 	}
-	else {
-		perror("");
-	}
 }

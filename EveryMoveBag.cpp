@@ -9,9 +9,9 @@ using namespace std;
 
 void initEveryMoveBag(EveryMoveBag* EveryMoveBag) // this function is used to initialize the Dice Bag
 {
-	EveryMoveBag->numbers = new int[1]; // this is used to allocate memory
+	EveryMoveBag->numbers = new int[2]; // this is used to allocate memory
 	EveryMoveBag->numberOfElements = 0; // number of elements currently inside
-	EveryMoveBag->sizeOfArray = 1;    // starting size
+	EveryMoveBag->sizeOfArray = 2;    // starting size
 }
 
 void addMoveToEveryMoveBag(EveryMoveBag* EveryMoveBag, int fieldNumber) // this function is used to add a number
@@ -47,7 +47,7 @@ void removeEverythingExceptTheseTwo(EveryMoveBag* everyMoveBag, int moveFrom, in
 	everyMoveBag->sizeOfArray = 2;
 }
 
-void handlePopFront(EveryMoveBag* EveryMoveBag) // in case the user uses the second dice
+void handlePopFrontEveryMove(EveryMoveBag* EveryMoveBag) // in case the user uses the second dice
 {
 	assert(EveryMoveBag->numberOfElements > 0);
 	for (size_t i = 0; i < EveryMoveBag->numberOfElements - 1; i++)
