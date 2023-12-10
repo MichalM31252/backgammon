@@ -123,7 +123,14 @@ int isMovePossibleUsingDicebag(Board* board, Player* currentPlayer, int moveFrom
 	// if yes return 1	
 	// if no return 0
 
-	return 1; // FIX THIS
+	for (int i = 0; i < everyMoveBag->numberOfElements; i++) {
+		if (everyMoveBag->numbers[i] == moveFrom) {
+			if (everyMoveBag->numbers[i + 1] == moveTo) {
+				return 1;
+			}
+		}
+	}
+	return 0;
 }
 
 int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo, EveryMoveBag* everyMoveBag) {
