@@ -118,7 +118,7 @@ int isMoveToCourt(int moveFrom, int moveTo) {
 	return 0;
 }
 
-int isMovePossibleUsingDicebag(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
+int isMovePossibleUsingDicebag(Board* board, Player* currentPlayer, int moveFrom, int moveTo, EveryMoveBag* everyMoveBag) {
 	// get the array of every possible move and check if current move is in the array
 	// if yes return 1	
 	// if no return 0
@@ -126,7 +126,7 @@ int isMovePossibleUsingDicebag(Board* board, Player* currentPlayer, int moveFrom
 	return 1; // FIX THIS
 }
 
-int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
+int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo, EveryMoveBag* everyMoveBag) {
 	if (isMoveInsideBoard(moveFrom, moveTo) == 0) { // checks if the move is inside the board
 		return 0;
 	}
@@ -136,7 +136,7 @@ int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, in
 	if (canMoveToField(board, currentPlayer, moveFrom, moveTo) == 0) { // checks if we can move to the field
 		return 0;
 	}
-	if (isMovePossibleUsingDicebag(board, currentPlayer, moveFrom, moveTo) == 0) { // checks if the move is possible using the dicebag
+	if (isMovePossibleUsingDicebag(board, currentPlayer, moveFrom, moveTo, everyMoveBag) == 0) { // checks if the move is possible using the dicebag
 		return 0;
 	}
 	// add a function to check if there are any pawns in the field we want to move from
@@ -149,7 +149,7 @@ int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo, E
 	// different function for moving from field to field
 
 	// also check if there are any pawns in the bar
-	if (isMoveInsideBoardValid(board, currentPlayer, moveFrom, moveTo) == 1) { // for moving inside the board (ONLY FIELDS)
+	if (isMoveInsideBoardValid(board, currentPlayer, moveFrom, moveTo, everyMoveBag) == 1) { // for moving inside the board (ONLY FIELDS)
 		return 1;
 	}
 	return 0;
