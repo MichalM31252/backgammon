@@ -2,6 +2,7 @@
 #include "assert.h"
 
 #include "EveryMoveBag.h"
+#include "Board.h"
 #include "Constants.h"
 
 
@@ -35,12 +36,6 @@ void addMoveToEveryMoveBag(EveryMoveBag* EveryMoveBag, int fieldNumber) // this 
 	EveryMoveBag->numberOfElements++; // increase the number of elements
 }
 
-void handlePopBack(EveryMoveBag* EveryMoveBag) // in case the user uses the first dice
-{
-	assert(EveryMoveBag->numberOfElements > 0);
-	EveryMoveBag->numberOfElements--;
-}
-
 void handlePopFront(EveryMoveBag* EveryMoveBag) // in case the user uses the second dice
 {
 	assert(EveryMoveBag->numberOfElements > 0);
@@ -60,18 +55,63 @@ void handleShowEveryMoveBag(EveryMoveBag* EveryMoveBag) // this function is used
 {
 	for (int i = 0; i < EveryMoveBag->numberOfElements; i++) // prints the elements of the vector
 	{
+		if (i % 10 == 0) {
+			cout << endl;
+		}
 		cout << " " << EveryMoveBag->numbers[i]; // prints the elements of the vector
 	}
 	cout << endl;
 }
 
-void genEveryMoveBag(EveryMoveBag* EveryMoveBag, Board* board, Player* currentPlayer, int fieldNumber) {
-	int directionOfMoves;
-	if (currentPlayer->id == 0) {
-		directionOfMoves = directionOfMovementRed;
+void addEveryMoveOneDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition) {
+	int directionOfMoves = getDirectionOfMoves(currentPlayer);
+	for (int j = 0; j < board->diceBag->numberOfElements; j++) {
+		int moveFrom = currentPosition;
+		int moveTo = currentPosition + board->diceBag->numbers[j] * directionOfMoves;
+		if (canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
+			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
+			addMoveToEveryMoveBag(everyMoveBag, moveTo);  // add the current position + the value of the dice to the list 
+		}
 	}
+}
+
+
+
+void addEveryMoveMultipleDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition) {
+	int directionOfMoves = getDirectionOfMoves(currentPlayer);
+	for (int j = 2; j <= board->diceBag->numberOfElements; j++) {
+		int pom = 0;
+		for (int k = 0; k < j; k++) {
+			pom += board->diceBag->numbers[k];
+		}
+
+		int moveFrom = currentPosition;
+		int moveTo = currentPosition + pom * directionOfMoves;
+		if (canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
+			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
+			addMoveToEveryMoveBag(everyMoveBag, moveTo);                        // add the current position + the value of the dice to the list 
+		}
+	}
+}
+
+void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer) {
+	int directionOfMoves;
 	if (currentPlayer->id == 1) {
 		directionOfMoves = directionOfMovementWhite;
+	}
+	else if (currentPlayer->id == 0) {
+		directionOfMoves = directionOfMovementRed;
+	}
+	else {
+		assert(0);
+	}
+
+	for (int i = 0; i < amountOfFields; i++) {
+		if (isOwnerOfField(board, currentPlayer, i + 1) == 1) {
+			int currentPosition = i + 1;
+			addEveryMoveOneDice(everyMoveBag, board, currentPlayer, currentPosition);
+			addEveryMoveMultipleDice(everyMoveBag, board, currentPlayer, currentPosition);
+		}
 	}
 
 	// add to the list every capturing move
@@ -87,8 +127,8 @@ void genEveryMoveBag(EveryMoveBag* EveryMoveBag, Board* board, Player* currentPl
 	//            currentPosition + valueOfDice2
 	//            currentPosition + valueOfDice3
 	//            currentPosition + valueOfDice4
-	//          moveMultipleDice
 	// 
+	//          moveMultipleDice
 	//            for (int i = 2; i <= amountInitializedDice; i++)
 	//              int pom = 0;
 	//              for (int j = 0; j < i; j++)

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Player.h"
+#include "Constants.h"
 
 using namespace std;
 
@@ -16,5 +17,17 @@ void changeCurrentPlayer(Player** player, Player* red, Player* white) { // chang
 	}
 	else {
 		*player = white;
+	}
+}
+
+int getDirectionOfMoves(Player* currentPlayer) {
+	if (currentPlayer->id == 0) {
+		return directionOfMovementRed;
+	}
+	else if (currentPlayer->id == 1) {
+		return directionOfMovementWhite;
+	}
+	else {
+		perror("");
 	}
 }

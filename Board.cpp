@@ -5,6 +5,10 @@
 
 #include "Board.h"
 #include "FileInterface.h"
+#include "EveryMoveBag.h"
+
+#include <stdio.h> // graphical library
+#include "conio2.h"
 
 using namespace std;
 
@@ -53,17 +57,6 @@ void setUpBoard(Board* board, Player *red, Player *white, Player* currentPlayer)
 }
 
 void setUpDiceBag(Board* board, Player* red, Player* white) {
-
-	// 
-
-	//int currentPlayerNumber = decideWhichPlayerGoesFirst();
-	//DiceBag diceBag; // create the dice bag
-	//if (currentPlayerNumber == idOfPlayerRed) {
-	//	initDiceBag(&diceBag, red);
-	//}
-	//if (currentPlayerNumber == idOfPlayerWhite) {
-	//	initDiceBag(&diceBag, white);
-	//}
 
 	board->diceBag = new DiceBag(); // doesnt this line create a memory leak ???
 }
@@ -125,25 +118,34 @@ int isMoveToCourt(int moveFrom, int moveTo) {
 	return 0;
 }
 
-int isMovePossibleUsingDicebag(Board* board, int moveFrom, int moveTo) {
+int isMovePossibleUsingDicebag(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
 	// get the array of every possible move and check if current move is in the array
 	// if yes return 1	
 	// if no return 0
+	EveryMoveBag* everyMoveBag = new EveryMoveBag();
+	initEveryMoveBag(everyMoveBag);
+	genEveryMove(everyMoveBag, board, currentPlayer);
+
+	int currentY = boardHeight + 2 + 3 + 3 + 2 + 3 + 2;
+	int currentX = 1;
+
+	gotoxy(currentX, currentY);
+	handleShowEveryMoveBag(everyMoveBag);
 
 	return 1; // FIX THIS
 }
 
 int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
-	if (isOwnerOfField(board, currentPlayer, moveFrom) == 0) { // checks if the field we want to move from belongs to the current player
+	if (isMoveInsideBoard(moveFrom, moveTo) == 0) { // checks if the move is inside the board
 		return 0;
 	}
-	if (isMoveInsideBoard(moveFrom, moveTo) == 0) { // checks if the move is inside the board
+	if (isOwnerOfField(board, currentPlayer, moveFrom) == 0) { // checks if the field we want to move from belongs to the current player
 		return 0;
 	}
 	if (canMoveToField(board, currentPlayer, moveFrom, moveTo) == 0) { // checks if we can move to the field
 		return 0;
 	}
-	if (isMovePossibleUsingDicebag(board, moveFrom, moveTo) == 0) { // checks if the move is possible using the dicebag
+	if (isMovePossibleUsingDicebag(board, currentPlayer, moveFrom, moveTo) == 0) { // checks if the move is possible using the dicebag
 		return 0;
 	}
 	// add a function to check if there are any pawns in the field we want to move from
@@ -186,7 +188,6 @@ void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
 
 	removePawn(board, player, moveFrom);
 	addPawn(board, player, moveTo);
-
-	initDiceBag(board->diceBag, player);
+	initDiceBag(board->diceBag, player); // reset the dicebag
 }
 

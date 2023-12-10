@@ -44,7 +44,6 @@ int main()
         handlePrint(&board, currentPlayer);
         handleUserResponse(&board, currentPlayer, &isGameFinished, &red, &white);
         changeCurrentPlayer(&currentPlayer, &red, &white);
-
     }
     _setcursortype(_NORMALCURSOR);
     // print the winner

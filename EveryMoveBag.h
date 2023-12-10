@@ -9,10 +9,9 @@ struct EveryMoveBag
 	int sizeOfArray; // Size of the array
 };
 
-void initEveryMoveBag(EveryMoveBag* EveryMoveBag);
-void addMoveToEveryMoveBag(EveryMoveBag* EveryMoveBag, int fieldNumber);
-void handlePopBack(EveryMoveBag* EveryMoveBag);
-void handlePopFront(EveryMoveBag* EveryMoveBag);
-void emptyEveryMoveBag(EveryMoveBag* EveryMoveBag);
-void handleShowEveryMoveBag(EveryMoveBag* EveryMoveBag);
-void genEveryMoveBag(EveryMoveBag* EveryMoveBag, Board* board, Player* currentPlayer, int fieldNumber);
+void initEveryMoveBag(EveryMoveBag* everyMoveBag);
+void addMoveToEveryMoveBag(EveryMoveBag* everyMoveBag, int fieldNumber);
+void handlePopFront(EveryMoveBag* everyMoveBag);
+void emptyEveryMoveBag(EveryMoveBag* everyMoveBag);
+void handleShowEveryMoveBag(EveryMoveBag* everyMoveBag);
+void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer);

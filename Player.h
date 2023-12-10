@@ -13,3 +13,4 @@ struct Player
 
 void initPlayer(Player* player, int id);
 void changeCurrentPlayer(Player** player, Player* red, Player* white);
+int getDirectionOfMoves(Player* currentPlayer);
