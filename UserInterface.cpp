@@ -110,7 +110,7 @@ bool decideIfPawnShouldBePrinted(int i, int j, int startingY, int startingX, int
 	return false;
 }
 
-void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int *currentField, int monotonocity) {
+void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int *currentField, int monotonocity) { // prints symbols in the quarter of the board
 	if (decideIfCornerShouldBePrinted(i, j, startingY, startingX, countToEndOfField)) {
 		return;
 	}
@@ -127,7 +127,7 @@ void printPartOfTheQuarter(int i, int j, int startingY, int startingX, int* coun
 	cputs(space);
 }
 
-void printQuarterField(int startingY, int startingX, Board* board, int *currentField, int monotonocity) {
+void printQuarterField(int startingY, int startingX, Board* board, int *currentField, int monotonocity) { // prints the quarter of the board
 	// inside these loops I could overwrite previous characters with user data
 	int countToEndOfField = 1;
 	for (int j = 1; j <= quarterWidth; j++ ) { // j is for the column
@@ -139,7 +139,7 @@ void printQuarterField(int startingY, int startingX, Board* board, int *currentF
 	}
 }
 
-void printFieldNumbersTop() {
+void printFieldNumbersTop() { // prints the numbers on the top of the board
 	int currentFieldNumberAddition = 1;
 	int countUntillNextNumber = 0;
 	for (int i = 3; i < boardWidth - 1; i++) {
@@ -162,7 +162,7 @@ void printFieldNumbersTop() {
 	}
 }
 
-void printBoard(Board *board) {
+void printBoard(Board *board) { // prints the board
 	// Upper left quarter
 	int currentField = 13;
 	int monotonicity = 1;
@@ -184,7 +184,7 @@ void printBoard(Board *board) {
 	printQuarterField(2 + quarterHeight + 1, 1 + quarterWidth + 1, board, &currentField, monotonicity);
 }
 
-void printFieldNumbersBottom() {
+void printFieldNumbersBottom() { // prints the numbers on the bottom of the board
 	int currentFieldNumberAddition = -1;
 	int countUntillNextNumber = 0;
 	for (int i = 3; i < boardWidth - 1; i++) {
@@ -222,7 +222,7 @@ int getNumberOfPawnsInCourt(Board* board, int playerId)
 	return board->court[playerId]->numberOfPawns;
 }
 
-void printBarStatus(Board* board) {
+void printBarStatus(Board* board) { // prints the number of pawns in the bar
 	int currentY = boardHeight + 2;
 	int currentX = 1;
 
@@ -236,7 +236,7 @@ void printBarStatus(Board* board) {
 	cputs((const char*)temp);
 }
 
-void printCourtStatus(Board* board) {
+void printCourtStatus(Board* board) { // prints the number of pawns in the court
 	int currentY = boardHeight + 2 + 3;
 	int currentX = 1;
 
@@ -250,7 +250,7 @@ void printCourtStatus(Board* board) {
 	cputs((const char*)temp);
 }
 
-void printCurrentTurn(Player* currentPlayer) {
+void printCurrentTurn(Player* currentPlayer) { // prints who's turn it is
 	int currentY = boardHeight + 2 + 3 + 3;
 	int currentX = 1;
 
@@ -263,7 +263,7 @@ void printCurrentTurn(Player* currentPlayer) {
 	}
 }
 
-void printCurrentRolledNumbers(Board* board) {
+void printCurrentRolledNumbers(Board* board) { // prints the rolled numbers
 	int currentY = boardHeight + 2 + 3 + 3 + 1;
 	int currentX = 1;
 
@@ -272,7 +272,7 @@ void printCurrentRolledNumbers(Board* board) {
 	handleShowDiceBag(board->diceBag);
 }
 
-void printMenu(Board* board) {
+void printMenu(Board* board) { // prints the menu
 	int currentY = boardHeight + 2 + 3 + 3 + 2 + 3;
 	int currentX = 1;
 	char temp[50];
@@ -405,36 +405,22 @@ void handleMove(Board* board, Player* currentPlayer) {
 		int fieldFrom, fieldTo;
 
 		handleMoveInput(&fieldFrom, &fieldTo);
-
 		clearMenuResponseField();
 
 		if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo, everyMoveBag) == 1) {
-			////////////////////////////////////////////////////////////////////////////////// DELETING ENEMY PAWN AFTER BEATING IT HERE
 			if (canCapturePawn(board, currentPlayer, fieldFrom, fieldTo) == 1) {
 				removePawn(board, fieldTo);
+				// add moving to bar here
 			}
-			// 
-
-			movePawn(board, currentPlayer, fieldFrom, fieldTo);
-			//gotoxy(currentX, currentY);
-			//cputs((const char*)"Pawn was moved!"); It just flicks for a second
+			movePawn(board, currentPlayer, fieldFrom, fieldTo); // Moving pawn
 			int sizeOfMove = abs(fieldFrom - fieldTo);
-			removeDices(board, currentPlayer, sizeOfMove);
+			removeDices(board, currentPlayer, sizeOfMove); // Removes the dices that were used in the move
 		}
 		handleMove(board, currentPlayer);
 	}
-
-
-	// CHECK IF EVERY DICE WAS USED -> CHECK IF SUM OF DICE IN THE BAG IS EQUAL TO THE LENFTH OF THE MOVE
-	// 
-	// IF NOT REMOVE THE DICES FROM THE DICEBAG
-	// REPEAT THIS FUNCTION
-	// 
-	// IF EVERY DICE WAS USED  DO NOTHING
-
 }
 
-void handleUserResS(Board* board, Player* currentPlayer, int* isGameFinished) {
+void handleUserResS(Board* board, Player* currentPlayer, int* isGameFinished) { // handles saving board to file
 	saveBoardToFile(board, currentPlayer);
 	clearMenuResponseField();
 
@@ -444,7 +430,7 @@ void handleUserResS(Board* board, Player* currentPlayer, int* isGameFinished) {
 	cputs((const char*)"Saved!");
 }
 
-void handleUserResL(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
+void handleUserResL(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) { // handles loading board from file
 
 	freeBoard(board);
 	setUpBoard(board, red, white, currentPlayer);
@@ -457,20 +443,20 @@ void handleUserResL(Board* board, Player* currentPlayer, int* isGameFinished, Pl
 	cputs((const char*)"Loaded!");
 }
 
-void handleM(Board* board, Player* currentPlayer, char character) {
+void handleM(Board* board, Player* currentPlayer, char character) { // handles moving the pawn
 	if (character == 'm') {
 		handleMove(board, currentPlayer);
 		initDiceBag(board->diceBag, currentPlayer); // reset the dicebag
 	}
 }
 
-void handleQ(Board* board, Player* currentPlayer, char character, int* isGameFinished) {
+void handleQ(Board* board, Player* currentPlayer, char character, int* isGameFinished) { // handles quitting the game
 	if (character == 'q') {
 		*isGameFinished = 1;
 	}
 }
 
-int isCharacterCorrect(char character) {
+int isCharacterCorrect(char character) { // checks if the character gives by the user is usable
 	if (character == 'm' || character == 's' || character == 'l' || character == 'q') {
 		return 1;
 	}
@@ -483,7 +469,7 @@ void handleMQ(Board* board, Player* currentPlayer, int* isGameFinished, Player* 
 	handleQ(board, currentPlayer, character, isGameFinished);
 }
 
-void handleUserRes(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) {
+void handleUserRes(Board* board, Player* currentPlayer, int* isGameFinished, Player* red, Player* white) { // handles user response to the menu (Whole menu)
 	char character;
 	cin >> character;
 	if (isCharacterCorrect(character) == 1) { // user given correct input
