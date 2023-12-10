@@ -35,6 +35,18 @@ void addMoveToEveryMoveBag(EveryMoveBag* EveryMoveBag, int fieldNumber) // this 
 	EveryMoveBag->numberOfElements++; // increase the number of elements
 }
 
+void removeEverythingExceptTheseTwo(EveryMoveBag* everyMoveBag, int moveFrom, int moveTo) {
+	int* temp = new int[2];
+
+	temp[0] = moveFrom;
+	temp[1] = moveTo;
+	delete[] everyMoveBag->numbers;
+
+	everyMoveBag->numbers = temp;
+	everyMoveBag->numberOfElements = 2;
+	everyMoveBag->sizeOfArray = 2;
+}
+
 void handlePopFront(EveryMoveBag* EveryMoveBag) // in case the user uses the second dice
 {
 	assert(EveryMoveBag->numberOfElements > 0);
@@ -42,6 +54,11 @@ void handlePopFront(EveryMoveBag* EveryMoveBag) // in case the user uses the sec
 	{
 		EveryMoveBag->numbers[i] = EveryMoveBag->numbers[i + 1];
 	}
+	EveryMoveBag->numberOfElements--;
+}
+
+void handlePopBack(EveryMoveBag* EveryMoveBag) // in case the user uses the first dice
+{
 	EveryMoveBag->numberOfElements--;
 }
 

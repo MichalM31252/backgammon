@@ -31,3 +31,15 @@ int getDirectionOfMoves(Player* currentPlayer) {
 		perror("");
 	}
 }
+
+int getPositionOfCourt(Player* currentPlayer) {
+	if (currentPlayer->id == 0) {
+		return courtIndexRed;
+	}
+	else if (currentPlayer->id == 1) {
+		return courtIndexWhite;
+	}
+	else {
+		perror("");
+	}
+}

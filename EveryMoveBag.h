@@ -11,6 +11,8 @@ struct EveryMoveBag
 
 void initEveryMoveBag(EveryMoveBag* everyMoveBag);
 void addMoveToEveryMoveBag(EveryMoveBag* everyMoveBag, int fieldNumber);
+void removeEverythingExceptTheseTwo(EveryMoveBag* everyMoveBag, int moveFrom, int moveTo);
 void handlePopFront(EveryMoveBag* everyMoveBag);
+void handlePopBack(EveryMoveBag* EveryMoveBag);
 void emptyEveryMoveBag(EveryMoveBag* everyMoveBag);
 void handleShowEveryMoveBag(EveryMoveBag* everyMoveBag);
