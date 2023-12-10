@@ -344,35 +344,45 @@ int addMoveMultipleDiceRemoving(EveryMoveBag* everyMoveBag, Board* board, Player
 
 /////////////////////////////
 
-void collectMovesForRemoving(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int directionOfMoves) { // collects moves for removing pawns from the board
-	int firstPosition = getFirPosOfBase(currentPlayer);
-	int secondPosition = getSecPosOfBase(currentPlayer);
-	int courtPosition = getPositionOfCourt(currentPlayer);
-	int distanceFromCourt1 = 0;
-	int distanceFromCourt2 = 0;
+void collectMovesForRemoving(EveryMoveBag* eMB, Board* board, Player* currentP, int directionOfMoves) { // collects moves for removing pawns from the board
+	int fP = getFirPosOfBase(currentP); // first position
+	int sP = getSecPosOfBase(currentP);
+	int cP = getPositionOfCourt(currentP); // court position
+	int dis1 = 0; // distance from court 1
+	int dis2 = 0; // distance from court 2
 	//  19, 20, 21, 22, 23, 24     RED BASE    DIRECTION OF MOVE IS 1
 	//   6,  5,  4,  3,  2,  1     WHITE BASE  DIRECTION OF MOVE IS -1
-	for (int i = firstPosition; i != secondPosition + 1; i += directionOfMoves) {
-		if (isOwnerOfField(board, currentPlayer, i) == 1) {
+	for (int i = fP; i != sP + 1; i += directionOfMoves) {
+		if (isOwnerOfField(board, currentP, i) == 1) {
 			// if cyfry po lewej wieksze to usun po prawej
 			// if cyfru po prawej wieksze to usun po lewej
-			distanceFromCourt1 = addMoveOneDiceRemoving(everyMoveBag, board, currentPlayer, i, courtPosition);
-			distanceFromCourt2 = addMoveMultipleDiceRemoving(everyMoveBag, board, currentPlayer, i, courtPosition);
-			if (distanceFromCourt1 > distanceFromCourt2) {
-				removeEverythingExceptTheseTwo(everyMoveBag, i, courtPosition);
+			dis1 = addMoveOneDiceRemoving(eMB, board, currentP, i, cP);
+			dis2 = addMoveMultipleDiceRemoving(eMB, board, currentP, i, cP);
+			if (dis1 > dis2) {
+				removeEverythingExceptTheseTwo(eMB, i, cP);
 				break;
 			}
-			if (distanceFromCourt1 < distanceFromCourt2) {
-				removeEverythingExceptTheseTwo(everyMoveBag, i, courtPosition);
+			if (dis1 < dis2) {
+				removeEverythingExceptTheseTwo(eMB, i, cP);
 				break;
 			}
-			if (distanceFromCourt1 == distanceFromCourt2 && distanceFromCourt1 > 0) { // scenario where both distances are the same for ex. 4, 4 and are not equal to 0 (show multiple moves)
+			if (dis1 == dis2 && dis1 > 0) { // scenario where both distances are the same for ex. 4, 4 and are not equal to 0 (show multiple moves)
 				break;
 			}
 			//else if (distanceFromCourt1 == 0 && distanceFromCourt2 == 0) { the scenario where you can't move the pawn straight to the court (but you can move it closer to the court)
 			//	just add normal moves to the list
 			//}
 		}
+	}
+}
+
+void genEveryMoveDefault(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int directionOfMoves) {
+	collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 1); // only get capturing moves first
+	if (everyMoveBag->numberOfElements == 0) { // if there are no capturing moves
+		collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 0); // just collect move that fit the rest of criteria
+	}
+	else { // if there are capturing moves
+		capturingMovesPresent(everyMoveBag, board, currentPlayer); // get the capturing moves that are the closest to the court
 	}
 }
 
@@ -386,23 +396,11 @@ void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 		collectMovesForRemoving(everyMoveBag, board, currentPlayer, directionOfMoves);
 		// IF THE LIST HERE IS EMPTY FILL IT WITH NORMAL MOVES
 		if (everyMoveBag->numberOfElements == 0) {
-			collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 1); // only get capturing moves first
-			if (everyMoveBag->numberOfElements == 0) { // if there are no capturing moves
-				collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 0); // just collect move that fit the rest of criteria
-			}
-			else { // if there are capturing moves
-				capturingMovesPresent(everyMoveBag, board, currentPlayer); // get the capturing moves that are the closest to the court
-			}
+			genEveryMoveDefault(everyMoveBag, board, currentPlayer, directionOfMoves);
 		}
 	}
 	else { // if not every pawn is in the base do the usual
-		collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 1); // only get capturing moves first
-		if(everyMoveBag->numberOfElements == 0) { // if there are no capturing moves
-			collectMoves(everyMoveBag, board, currentPlayer, directionOfMoves, 0); // just collect move that fit the rest of criteria
-		}
-		else { // if there are capturing moves
-			capturingMovesPresent(everyMoveBag, board, currentPlayer); // get the capturing moves that are the closest to the court
-		}
+		genEveryMoveDefault(everyMoveBag, board, currentPlayer, directionOfMoves);
 	}
 }
 

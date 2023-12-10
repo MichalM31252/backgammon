@@ -392,6 +392,21 @@ void handleMoveInit(Board* board, Player* currentPlayer, EveryMoveBag* everyMove
 	handleShowEveryMoveBag(everyMoveBag);
 }
 
+void handleMoveFunctionality(Board* board, Player* currentPlayer, int fieldFrom, int fieldTo) {
+	if (isMoveToCourt(fieldFrom, fieldTo) == 1) {
+		removePawn(board, fieldFrom);  // WAS FIELD TO CHANGED TO FIELD FROM?
+		addPawnToCourt(board, currentPlayer, fieldFrom); // this line laready deletes the pawn from the field
+	}
+	else {
+		if (canCapturePawn(board, currentPlayer, fieldFrom, fieldTo) == 1) {
+			removePawn(board, fieldTo);
+		}
+		movePawn(board, currentPlayer, fieldFrom, fieldTo); // Moving pawn
+	}
+	int sizeOfMove = abs(fieldFrom - fieldTo);
+	removeDices(board, currentPlayer, sizeOfMove); // Removes the dices that were used in the move
+}
+
 void handleMove(Board* board, Player* currentPlayer) {
 
 	int currentY, currentX;
@@ -408,20 +423,7 @@ void handleMove(Board* board, Player* currentPlayer) {
 		clearMenuResponseField();
 
 		if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo, everyMoveBag) == 1) {
-
-			if (isMoveToCourt(fieldFrom, fieldTo) == 1) {
-				removePawn(board, fieldFrom);  // WAS FIELD TO CHANGED TO FIELD FROM?
-				addPawnToCourt(board, currentPlayer, fieldFrom); // this line laready deletes the pawn from the field
-			}
-			else {
-				if (canCapturePawn(board, currentPlayer, fieldFrom, fieldTo) == 1) {
-					removePawn(board, fieldTo);       // is it supposed to be fieldTo?
-					// add moving to bar here
-				}
-				movePawn(board, currentPlayer, fieldFrom, fieldTo); // Moving pawn
-			}
-			int sizeOfMove = abs(fieldFrom - fieldTo);
-			removeDices(board, currentPlayer, sizeOfMove); // Removes the dices that were used in the move
+			handleMoveFunctionality(board, currentPlayer, fieldFrom, fieldTo);
 		}
 		handleMove(board, currentPlayer);
 	}
