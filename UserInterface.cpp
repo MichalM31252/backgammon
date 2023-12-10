@@ -80,14 +80,14 @@ void printTheSymbolForPawn(int i, int j, int startingY, int startingX, int* coun
 }
 
 void printNumberOfHiddenPawns(int i, int j, int startingY, int startingX, int* countToEndOfField, Board* board, int* currentField) {
-	int theAmountOfPawnsThatWasPlaced = i - margin;
+	int theAmountOfPawnsThatWasPlaced = i - margin - 1;
 	int amountOfPawnsLeft = board->fields[*currentField - 1]->numberOfPawns - theAmountOfPawnsThatWasPlaced;
 	if (amountOfPawnsLeft == 1) {
 		printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, pawnSymbol);
 	}
 	else {
 		char apl[20];
-		sprintf(apl, "%d", amountOfPawnsLeft + 1);
+		sprintf(apl, "%d", amountOfPawnsLeft);
 		const char* aplConstChar = apl;
 		printTheSymbolForPawn(i, j, startingY, startingX, countToEndOfField, board, currentField, aplConstChar);
 	}
@@ -346,7 +346,7 @@ void clearMenuResponseField() {
 
 void removeDices(Board* board, Player* currentPlayer, int sizeOfMove) { // remove the dices untill there are only unused dices left
 	int temp = 0;
-	for (int i = 0; i < board->diceBag->numberOfElements; i++) {
+	for (int i = 0; i < board->diceBag->numberOfElements + 1; i++) {
 		if (temp == sizeOfMove) {
 			break;
 		}
@@ -398,7 +398,7 @@ void handleMove(Board* board, Player* currentPlayer) {
 
 	EveryMoveBag* everyMoveBag = new EveryMoveBag();
 
-	handleMoveInit(board, currentPlayer, everyMoveBag);
+	handleMoveInit(board, currentPlayer, everyMoveBag); // problem tutaj
 
 	if (everyMoveBag->numberOfElements > 0) { // if there are possible moves
 
@@ -408,11 +408,18 @@ void handleMove(Board* board, Player* currentPlayer) {
 		clearMenuResponseField();
 
 		if (isMoveValid(board, currentPlayer, fieldFrom, fieldTo, everyMoveBag) == 1) {
-			if (canCapturePawn(board, currentPlayer, fieldFrom, fieldTo) == 1) {
-				removePawn(board, fieldTo);
-				// add moving to bar here
+
+			if (isMoveToCourt(fieldFrom, fieldTo) == 1) {
+				removePawn(board, fieldFrom);  // WAS FIELD TO CHANGED TO FIELD FROM?
+				addPawnToCourt(board, currentPlayer, fieldFrom); // this line laready deletes the pawn from the field
 			}
-			movePawn(board, currentPlayer, fieldFrom, fieldTo); // Moving pawn
+			else {
+				if (canCapturePawn(board, currentPlayer, fieldFrom, fieldTo) == 1) {
+					removePawn(board, fieldTo);       // is it supposed to be fieldTo?
+					// add moving to bar here
+				}
+				movePawn(board, currentPlayer, fieldFrom, fieldTo); // Moving pawn
+			}
 			int sizeOfMove = abs(fieldFrom - fieldTo);
 			removeDices(board, currentPlayer, sizeOfMove); // Removes the dices that were used in the move
 		}

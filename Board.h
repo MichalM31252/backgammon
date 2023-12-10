@@ -37,4 +37,5 @@ void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlaye
 void movePawn(Board* board, Player* player, int moveFrom, int moveTo);
 int canCapturePawn(Board* board, Player* currentPlayer, int moveFrom, int moveTo);
 void removePawn(Board* board, int fieldNumber);
+void addPawnToCourt(Board* board, Player* currentPlayer, int moveFrom);
 

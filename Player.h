@@ -15,3 +15,6 @@ void initPlayer(Player* player, int id);
 void changeCurrentPlayer(Player** player, Player* red, Player* white);
 int getDirectionOfMoves(Player* currentPlayer);
 int getPositionOfCourt(Player* currentPlayer);
+
+int getFirPosOfBase(Player* currentPlayer);
+int getSecPosOfBase(Player* currentPlayer);

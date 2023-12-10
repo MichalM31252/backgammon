@@ -40,3 +40,21 @@ int getPositionOfCourt(Player* currentPlayer) {
 		return courtFieldNumberWhite;
 	}
 }
+
+int getFirPosOfBase(Player* currentPlayer) {
+	if (getPositionOfCourt(currentPlayer) == 25) { // 
+		return 19;
+	}
+	if (getPositionOfCourt(currentPlayer) == 0) {
+		return 6;
+	}
+}
+
+int getSecPosOfBase(Player* currentPlayer) {
+	if (getPositionOfCourt(currentPlayer) == 25) { // 
+		return 24;
+	}
+	if (getPositionOfCourt(currentPlayer) == 0) {
+		return 1;
+	}
+}
