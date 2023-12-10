@@ -7,6 +7,7 @@
 #include "Board.h"
 #include "Bar.h"
 #include "FileInterface.h"
+#include "EveryMoveBag.h"
 
 #include "Constants.h"
 
@@ -340,8 +341,26 @@ void clearMenuResponseField() {
 }
 
 void handleMove(Board* board, Player* currentPlayer) {
-	int currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
-	int currentX = 1;
+
+	int currentY, currentX;
+
+	// CANT BE SOONER THAN HERE
+
+	EveryMoveBag* everyMoveBag = new EveryMoveBag();
+	initEveryMoveBag(everyMoveBag);
+	genEveryMove(everyMoveBag, board, currentPlayer);
+
+	currentY = boardHeight + 2 + 3 + 3 + 2 + 3 + 2;
+	currentX = 1;
+
+	gotoxy(currentX, currentY);
+	handleShowEveryMoveBag(everyMoveBag);
+
+	//
+
+
+	currentY = boardHeight + 2 + 3 + 3 + 2 + 1;
+	currentX = 1;
 
 	clearMenuResponseField();
 

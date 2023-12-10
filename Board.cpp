@@ -5,7 +5,6 @@
 
 #include "Board.h"
 #include "FileInterface.h"
-#include "EveryMoveBag.h"
 
 #include <stdio.h> // graphical library
 #include "conio2.h"
@@ -122,15 +121,6 @@ int isMovePossibleUsingDicebag(Board* board, Player* currentPlayer, int moveFrom
 	// get the array of every possible move and check if current move is in the array
 	// if yes return 1	
 	// if no return 0
-	EveryMoveBag* everyMoveBag = new EveryMoveBag();
-	initEveryMoveBag(everyMoveBag);
-	genEveryMove(everyMoveBag, board, currentPlayer);
-
-	int currentY = boardHeight + 2 + 3 + 3 + 2 + 3 + 2;
-	int currentX = 1;
-
-	gotoxy(currentX, currentY);
-	handleShowEveryMoveBag(everyMoveBag);
 
 	return 1; // FIX THIS
 }
