@@ -2,7 +2,6 @@
 #include "assert.h"
 
 #include "EveryMoveBag.h"
-#include "Board.h"
 #include "Constants.h"
 
 
@@ -58,61 +57,10 @@ void handleShowEveryMoveBag(EveryMoveBag* EveryMoveBag) // this function is used
 		if (i % 10 == 0) {
 			cout << endl;
 		}
-
 		if (i % 2 == 0) {
 			cout << " |";
 		}
 		cout << " " << EveryMoveBag->numbers[i]; // prints the elements of the vector
 	}
 	cout << endl;
-}
-
-void addEveryMoveOneDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition) {
-	int directionOfMoves = getDirectionOfMoves(currentPlayer);
-	for (int j = 0; j < board->diceBag->numberOfElements; j++) {
-		int moveFrom = currentPosition;
-		int moveTo = currentPosition + board->diceBag->numbers[j] * directionOfMoves;
-		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
-			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
-			addMoveToEveryMoveBag(everyMoveBag, moveTo);  // add the current position + the value of the dice to the list 
-		}
-	}
-}
-
-void addEveryMoveMultipleDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition) {
-	int directionOfMoves = getDirectionOfMoves(currentPlayer);
-	for (int j = 2; j <= board->diceBag->numberOfElements; j++) {
-		int pom = 0;
-		for (int k = 0; k < j; k++) {
-			pom += board->diceBag->numbers[k];
-		}
-
-		int moveFrom = currentPosition;
-		int moveTo = currentPosition + pom * directionOfMoves;
-		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
-			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
-			addMoveToEveryMoveBag(everyMoveBag, moveTo);                        // add the current position + the value of the dice to the list 
-		}
-	}
-}
-
-void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer) {
-	int directionOfMoves;
-	if (currentPlayer->id == 1) {
-		directionOfMoves = directionOfMovementWhite;
-	}
-	else if (currentPlayer->id == 0) {
-		directionOfMoves = directionOfMovementRed;
-	}
-	else {
-		assert(0);
-	}
-
-	for (int i = 0; i < amountOfFields; i++) {
-		if (isOwnerOfField(board, currentPlayer, i + 1) == 1) {
-			int currentPosition = i + 1;
-			addEveryMoveOneDice(everyMoveBag, board, currentPlayer, currentPosition);
-			addEveryMoveMultipleDice(everyMoveBag, board, currentPlayer, currentPosition);
-		}
-	}
 }

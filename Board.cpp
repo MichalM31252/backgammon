@@ -5,6 +5,7 @@
 
 #include "Board.h"
 #include "FileInterface.h"
+#include "EveryMoveBag.h""
 
 #include <stdio.h> // graphical library
 #include "conio2.h"
@@ -143,7 +144,7 @@ int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, in
 	return 1;
 }
 
-int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo) {
+int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo, EveryMoveBag* everyMoveBag) {
 	// different function for movint to court 
 	// different function for moving from field to field
 
@@ -179,5 +180,54 @@ void movePawn(Board* board, Player* player, int moveFrom, int moveTo) {
 	removePawn(board, player, moveFrom);
 	addPawn(board, player, moveTo);
 	initDiceBag(board->diceBag, player); // reset the dicebag
+}
+
+/////////////
+
+void addEveryMoveOneDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition) {
+	int directionOfMoves = getDirectionOfMoves(currentPlayer);
+	for (int j = 0; j < board->diceBag->numberOfElements; j++) {
+		int moveFrom = currentPosition;
+		int moveTo = currentPosition + board->diceBag->numbers[j] * directionOfMoves;
+		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
+			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
+			addMoveToEveryMoveBag(everyMoveBag, moveTo);  // add the current position + the value of the dice to the list 
+		}
+	}
+}
+
+void addEveryMoveMultipleDice(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer, int currentPosition) {
+	int directionOfMoves = getDirectionOfMoves(currentPlayer);
+	for (int j = 2; j <= board->diceBag->numberOfElements; j++) {
+		int pom = 0;
+		for (int k = 0; k < j; k++) {
+			pom += board->diceBag->numbers[k];
+		}
+
+		int moveFrom = currentPosition;
+		int moveTo = currentPosition + pom * directionOfMoves;
+		if (isMoveInsideBoard(moveFrom, moveTo) == 1 && canMoveToField(board, currentPlayer, moveFrom, moveTo) == 1) {
+			addMoveToEveryMoveBag(everyMoveBag, moveFrom);                               // add the current position to the list
+			addMoveToEveryMoveBag(everyMoveBag, moveTo);                        // add the current position + the value of the dice to the list 
+		}
+	}
+}
+
+void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer) {
+	int directionOfMoves;
+	if (currentPlayer->id == 1) {
+		directionOfMoves = directionOfMovementWhite;
+	}
+	else if (currentPlayer->id == 0) {
+		directionOfMoves = directionOfMovementRed;
+	}
+
+	for (int i = 0; i < amountOfFields; i++) {
+		if (isOwnerOfField(board, currentPlayer, i + 1) == 1) {
+			int currentPosition = i + 1;
+			addEveryMoveOneDice(everyMoveBag, board, currentPlayer, currentPosition);
+			addEveryMoveMultipleDice(everyMoveBag, board, currentPlayer, currentPosition);
+		}
+	}
 }
 

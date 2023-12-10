@@ -6,6 +6,7 @@
 #include "Bar.h"
 #include "Court.h"
 #include "Dice.h"
+#include "EveryMoveBag.h"
 
 #include "Constants.h"
 
@@ -30,8 +31,8 @@ int isMoveInsideBoard(int moveFrom, int moveTo);
 int isMoveToCourt(int moveFrom, int moveTo);
 int isMovePossibleUsingDicebag(Board* board, Player* currentPlayer, int moveFrom, int moveTo);
 int isMoveInsideBoardValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo);
-int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo);
+int isMoveValid(Board* board, Player* currentPlayer, int moveFrom, int moveTo, EveryMoveBag* everyMoveBag);
 
-
+void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer);
 void movePawn(Board* board, Player* player, int moveFrom, int moveTo);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Board.h" // change to player if errors persist
+// change to player if errors persist
 
 struct EveryMoveBag
 {
@@ -14,4 +14,3 @@ void addMoveToEveryMoveBag(EveryMoveBag* everyMoveBag, int fieldNumber);
 void handlePopFront(EveryMoveBag* everyMoveBag);
 void emptyEveryMoveBag(EveryMoveBag* everyMoveBag);
 void handleShowEveryMoveBag(EveryMoveBag* everyMoveBag);
-void genEveryMove(EveryMoveBag* everyMoveBag, Board* board, Player* currentPlayer);
