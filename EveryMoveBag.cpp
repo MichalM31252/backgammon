@@ -58,6 +58,10 @@ void handleShowEveryMoveBag(EveryMoveBag* EveryMoveBag) // this function is used
 		if (i % 10 == 0) {
 			cout << endl;
 		}
+
+		if (i % 2 == 0) {
+			cout << " |";
+		}
 		cout << " " << EveryMoveBag->numbers[i]; // prints the elements of the vector
 	}
 	cout << endl;
